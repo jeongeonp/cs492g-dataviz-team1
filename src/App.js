@@ -25,7 +25,7 @@ function App() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19)', padding: '0 15px'}}>
           <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
             <Grid item xs='auto'>
-              <h2>CS492(G) Team 1</h2>
+              <h3>CS492(G) Team 1</h3>
             </Grid> 
             <Grid item xs='auto'>
             <TabList onChange={handleChange} aria-label="lab API tabs example" style={{}}>
