@@ -16,7 +16,7 @@ import data from "../dummyData/data";
 // flatMap.shim();
 
 function Trend() {
-    const [data] = useState([25, 50, 35, 15, 94, 10]);
+    const [data, setData] = useState([25, 50, 35, 15, 94, 10]);
     const svgRef = useRef(); // for the svg container
 
 
@@ -40,6 +40,26 @@ function Trend() {
         svg.selectAll('.line').data([data]).join('path').attr('d', (d) => generateScaledLine(d)).attr('fill', 'none').attr('stroke', 'black');
     }, [])
 
+    const drawGraph = (updated_data) => {
+        const w = 800;
+        const h = 300;
+        const svg = d3.select(svgRef.current).attr('width', w).attr('height', h).style('background','#d3d3d3').style('margin', '50').style('overflow', 'visible');
+        // setting up the scaling
+        const xScale = d3.scaleLinear().domain([0, updated_data.length - 1]).range([0, w])
+        const yScale = d3.scaleLinear().domain([0, h]).range([h, 0]); //range starts from top to bottom
+        const generateScaledLine = d3.line().x((d, i) => xScale(i)).y(yScale).curve(d3.curveCardinal); // plotting the lines using the scales we created
+
+        // setting the axes
+        const xAxis = d3.axisBottom(xScale).ticks(updated_data.length).tickFormat(i => i + 1);
+        const yAxis = d3.axisLeft(yScale).ticks(5);
+        svg.append('g').call(xAxis).attr('transform', `translate(0, ${h})`);
+        svg.append('g').call(yAxis);
+
+        // setting up the data for the svg
+        svg.selectAll('.line').data([updated_data]).join('path').attr('d', (d) => generateScaledLine(d)).attr('fill', 'none').attr('stroke', 'black');
+
+    }
+
     // function regenerateData() {
     //     const chartData = [];
     //     for (let i = 0; i < 20; i++) {
@@ -53,6 +73,20 @@ function Trend() {
     //     setData(chartData)
     // }
 
+    const handleClickAspect = (aspect) => {
+        var updated_data = []
+        if (aspect == "physical") {
+            updated_data = [25, 50, 35, 15, 94, 10]
+        } else if (aspect == "mental") {
+            updated_data = [50, 100, 1, 5, 7, 3]
+        } else {
+            updated_data = [100, 30, 80, 90, 200, 130]
+        }
+        setData(updated_data);
+        drawGraph(updated_data);
+    }
+
+
     return (
         <div>
             <h2>Your Trends Overtime</h2>
@@ -60,9 +94,9 @@ function Trend() {
                 <h4 className="panel-title">Overall Trend</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                 <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-                    <Button>Physical Health</Button>
-                    <Button>Mental Health</Button>
-                    <Button>Social Health</Button>
+                    <Button onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                    <Button onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                    <Button onClick={() => handleClickAspect('social')}>Social Health</Button>
                 </ButtonGroup>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
                     <svg ref={svgRef}></svg>
