@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { ButtonGroup, Button, Box } from '@mui/material'
 import TrendChart from './TrendChart'
-import flatMap from "array.prototype.flatmap";
+// import flatMap from "array.prototype.flatmap";
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import * as d3 from 'd3';
@@ -13,15 +13,16 @@ import portfolioData from "../dummyData/PORTFOLIO.json";
 import './Pages.css';
 
 import data from "../dummyData/data";
-flatMap.shim();
+// flatMap.shim();
 
 function Trend() {
     const [data, setData] = useState([]);
     const d3ref = React.useRef(null);
-    const dataRef = React.useRef(flatMap(data, (e) => e));
+    // const dataRef = React.useRef(flatMap(data, (e) => e));
 
     useEffect(() => {
         regenerateData();
+        
     }, [])
 
     function regenerateData() {
