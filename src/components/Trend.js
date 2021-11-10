@@ -7,12 +7,12 @@ import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
 import * as d3 from 'd3';
 
 // TrendChart Dummy data
-import schcData from "../dummyData/SCHC.json";
-import vcitData from "../dummyData/VCIT.json";
-import portfolioData from "../dummyData/PORTFOLIO.json";
+//import schcData from "../dummyData/SCHC.json";
+//import vcitData from "../dummyData/VCIT.json";
+//import portfolioData from "../dummyData/PORTFOLIO.json";
 import './Pages.css';
 
-import data from "../dummyData/data";
+//import data from "../dummyData/data";
 // flatMap.shim();
 
 function Trend() {

@@ -1,7 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import './Pages.css';
 import * as d3 from "d3";
-import Radar from 'react-d3-radar';
 import { Grid } from '@mui/material'
 import { ReactRadarChart } from 'd3-radarchart';
 
@@ -107,37 +106,27 @@ function Overview() {
     }
 
     return (
-        <div className="panels">
-            <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
-                <Grid item xs='6' style={{border: '0px solid black'}}>
-                <h4 className="panel-title">Overview Page (HEALTH TRIANGLE)</h4>
-                <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
-                    {/*
-                    <Radar
-                        width={500}
-                        height={500}
-                        padding={70}
-                        domainMax={200}
-                        highlighted={highlighted}
-                        onHover={hover}
-                        data={dummyData}
-                        options={{
-
-                        }}
-                    />*/}
-                    <ReactRadarChart
-                    rootElementProps={{ className: 'chartRootClass' }}
-                    {...options} />
+        <div>
+            <h2>Overview Page</h2>
+            <div className="panels">
+                <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
+                    <Grid item xs='7' style={{border: '0px solid black'}}>
+                        <h4 className="panel-title">HEALTH TRIANGLE</h4>
+                        <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
+                        <ReactRadarChart
+                        rootElementProps={{ className: 'chartRootClass' }}
+                        {...options} />
+                    </Grid>
+                    <Grid item xs='5' style={{border: '0px solid black'}}>
+                        <h4 className="panel-title" style={{verticalAlign: 'top'}}>CURRENT GOALS</h4>
+                        <div style={{width: '500px', height: '550px'}}></div>
+                    </Grid>
+                    <Grid item xs='12' style={{border: '0px solid black', height: '40%'}}>
+                        <h4 className="panel-title">ASPECT PERCENTAGE</h4>
+                    </Grid>
                 </Grid>
-                <Grid item xs='6' style={{border: '0px solid black'}}>
-                    <h4 className="panel-title" style={{verticalAlign: 'top'}}>CURRENT GOALS</h4>
-                    <div style={{width: '500px', height: '550px'}}></div>
-                </Grid>
-                <Grid item xs='12' style={{border: '0px solid black', height: '40%'}}>
-                    <h4 className="panel-title">ASPECT PERCENTAGE</h4>
-                </Grid>
-            </Grid>
-            
+                
+            </div>
         </div>
     )
 }
