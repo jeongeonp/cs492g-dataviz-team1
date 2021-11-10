@@ -1,27 +1,41 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { ButtonGroup, Button, Box } from '@mui/material'
 import TrendChart from './TrendChart'
+import flatMap from "array.prototype.flatmap";
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
+import * as d3 from 'd3';
 
 // TrendChart Dummy data
 import schcData from "../dummyData/SCHC.json";
 import vcitData from "../dummyData/VCIT.json";
 import portfolioData from "../dummyData/PORTFOLIO.json";
-
 import './Pages.css';
 
-const dimensions = {
-    width: 600,
-    height: 300,
-    margin: { top: 30, right: 30, bottom: 30, left: 60 }
-  };
+import data from "../dummyData/data";
+flatMap.shim();
 
-
-// Code is informed by https://blog.griddynamics.com/using-d3-js-with-react-js-an-8-step-comprehensive-manual/ 
 function Trend() {
-    // Const over here
+    const [data, setData] = useState([]);
+    const d3ref = React.useRef(null);
+    const dataRef = React.useRef(flatMap(data, (e) => e));
 
+    useEffect(() => {
+        regenerateData();
+    }, [])
+
+    function regenerateData() {
+        const chartData = [];
+        for (let i = 0; i < 20; i++) {
+            const value = Math.floor(Math.random() * i + 3);
+            chartData.push({
+                label: i.toFixed,
+                value,
+                tooltipContent: `<b>x: </b>${i}<br><b>y: </b>${value}`
+            });
+        }
+        setData(chartData)
+    }
 
     return (
         <div>
@@ -35,7 +49,9 @@ function Trend() {
                     <Button>Social Health</Button>
                 </ButtonGroup>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
-                    <TrendChart data={[portfolioData, schcData, vcitData]} dimensions={dimensions}/>
+                    <Button onClick={regenerateData}>Change Data</Button>
+                    {/* <div ref={d3ref}></div> */}
+                    <TrendChart data={data} width={400} height={300}/> 
                 </Box>
             </div>
             <div className="panels">
