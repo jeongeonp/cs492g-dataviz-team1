@@ -1,5 +1,5 @@
 .panels {
-    width: 100%;
+    width: 95.5%;
     height: 85vh;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 14px 0 rgba(0, 0, 0, 0.19);
     /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
@@ -71,3 +71,146 @@
 .tooltip-date, .tooltip-likes {
     font-weight: bold;
 }
+
+svg {
+  border: 2px solid darkgreen;
+}
+
+.line {
+  fill: none;
+  stroke: green;
+  stroke-width: 4;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+  fill: rgb(0, 223, 0);
+  stroke: #fff;
+}
+
+.focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
+/* comment */
+svg {
+    border: 0px solid darkgreen;
+  }
+  
+  .line {
+    fill: none;
+    stroke: green;
+    stroke-width: 4;
+  }
+  
+  .overlay {
+    fill: none;
+    pointer-events: all;
+  }
+  
+  /* Style the dots by assigning a fill and stroke */
+  .dot {
+    fill: rgb(0, 223, 0);
+    stroke: #fff;
+  }
+  
+  .focus circle {
+    fill: none;
+    stroke: steelblue;
+  }
+
+
+.bubbleContainer {
+    width: 75%;
+    height: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 14px 0 rgba(0, 0, 0, 0.19);
+    display: inline-block;
+    border-radius: 5px;
+    vertical-align: top;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.bubbleInfo {
+    width: 23%;
+    height: 600px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 14px 0 rgba(0, 0, 0, 0.19);
+    display: inline-block;
+    border-radius: 5px;
+    vertical-align: top;
+    margin-left: 2%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.goodBubble {
+    width: 43%;
+    height: 450px;
+    margin-left: 2%;
+    background-color: #e3e3e3;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.badBubble {
+    width: 43%;
+    height: 450px;
+    margin-left: 2%;
+    background-color: #e3e3e3;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.controlBar {
+    width: 10%;
+    height: 450px;
+    background-color: #c3dcf0;
+    border-radius: 5px;
+    display: inline-block;
+        padding: 10px;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.bubbleSvg {
+    width: 85%;
+    height: 400px;
+    border: none;
+}
+
+.infoTitle {
+    font-weight: bold;
+}
+
+.description {
+    color: grey;
+}
+
+.goodCircle {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    background-color: #01c696;
+    margin-top: 15px;
+}
+
+.badCircle {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    background-color: #ff8974;
+    margin-top: 15px;
+}
+
