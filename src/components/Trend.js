@@ -3,12 +3,35 @@ import { ButtonGroup, Button, Box } from '@mui/material'
 
 import './Pages.css';
 
+import mental from '../assets/mental-p3012.json';
+
 import Plotly from "plotly.js-basic-dist-min";
 import createPlotlyComponent from "react-plotly.js/factory";
 
 const Plot = createPlotlyComponent(Plotly);
 
 
+console.log(mental)
+
+var times = Object.keys(mental.UID)
+
+for (var t in times) {
+    console.log(times[t])
+    var total = {}
+    //total[times[t]] = 
+}
+
+var dates = {
+    x: [
+        "2019-04-30 00:00",
+        "2019-05-01 01:00",
+        "2019-05-02 12:00",
+        "2019-05-03 12:30",
+        "2019-05-04 14:00",
+        "2019-05-05 17:00",
+        "2019-05-06 18:00",
+    ],
+}
 
 function Trend() {
     const [data] = useState([25, 50, 35, 15, 94, 10]);
@@ -26,8 +49,10 @@ function Trend() {
         {date: '10/10/2015', value: 50 },
     ])
     
-    const handleClickAspect = () => {
-        
+    const handleClickAspect = (e) => {
+        if (e === 'mental') {
+            console.log(mental)
+        }
     }
 
     return (
@@ -53,7 +78,7 @@ function Trend() {
                         },
                         {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
                         ]}
-                        layout={{width: 320, height: 240, title: 'A Fancy Plot'}}
+                        layout={{width: 800, height: 600, title: 'A Fancy Plot'}}
                     />
                 </Box>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
