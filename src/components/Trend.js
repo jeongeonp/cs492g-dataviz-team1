@@ -211,8 +211,8 @@ function Trend() {
         } else {
             updated_data = [100, 30, 80, 90, 200, 130]
         }
-        setData(updated_data);
-        drawGraph(updated_data);
+        //setData(updated_data);
+        //drawGraph(updated_data);
     }
 
 
