@@ -1,6 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import * as d3 from 'd3';
-import './Pages.css';
+import '../Pages.css';
+
 
 // Inspired by https://betterprogramming.pub/react-d3-plotting-a-line-chart-with-tooltips-ed41a4c31f4f
 function TrendChart(props) {

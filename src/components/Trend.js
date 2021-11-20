@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { ButtonGroup, Button, Box } from '@mui/material'
-import TrendChart from './TrendChart'
+import TrendChart from './archieve/TrendChart'
 // import flatMap from "array.prototype.flatmap";
 import ViewColumnIcon from '@mui/icons-material/ViewColumn';
 import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
@@ -228,7 +228,7 @@ function Trend() {
                     <Button onClick={() => handleClickAspect('social')}>Social Health</Button>
                 </ButtonGroup>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
-                    <svg ref={svgRef}></svg>
+                    {/*<svg ref={svgRef}></svg>*/}
                 </Box>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
                 </Box>
@@ -236,10 +236,10 @@ function Trend() {
             <div className="panels">
                 <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                     <h4 className="panel-title">Detailed trends for each metric</h4>
-                    <ButtonGroup sx={{ m: 2 }} variant="outlined" aria-label="outlined primary button group">
+                    {/*<ButtonGroup sx={{ m: 2 }} variant="outlined" aria-label="outlined primary button group">
                         <Button startIcon={<ViewAgendaIcon />}>Vertical View</Button>
                         <Button startIcon={<ViewColumnIcon/>}>Horizontal View</Button>
-                    </ButtonGroup>
+                    </ButtonGroup>*/}
                 </Box>
                 <div style={{border: '0px solid red', height: '93%'}}>
 
