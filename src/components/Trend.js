@@ -1,9 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { ButtonGroup, Button, Box } from '@mui/material'
+import { Box } from '@mui/material'
+import { Button } from 'semantic-ui-react'
 
 import './Pages.css';
 
-import mental from '../assets/mental-p3012.json';
+import mental_p3012 from '../assets/mental-p3012.json';
+import mental_others from '../assets/mental-others.json';
 
 import Plotly from "plotly.js-basic-dist-min";
 import createPlotlyComponent from "react-plotly.js/factory";
@@ -11,47 +13,45 @@ import createPlotlyComponent from "react-plotly.js/factory";
 const Plot = createPlotlyComponent(Plotly);
 
 
-console.log(mental)
+console.log(mental_others)
+console.log(Object.values(mental_others.total_mean))
 
-var times = Object.keys(mental.UID)
+const times = Object.keys(mental_p3012.total_mean)
+var total = {}
 
 for (var t in times) {
-    console.log(times[t])
-    var total = {}
-    //total[times[t]] = 
+    //console.log(times[t])
+    total[times[t]] = mental_p3012.Valence[times[t]] + mental_p3012.Arousal[times[t]] + mental_p3012.Attention[times[t]] + mental_p3012.Stress[times[t]]
 }
+
+var mental_total = mental_p3012
+mental_total['Total'] = total
 
 var dates = {
     x: [
-        "2019-04-30 00:00",
-        "2019-05-01 01:00",
-        "2019-05-02 12:00",
-        "2019-05-03 12:30",
-        "2019-05-04 14:00",
-        "2019-05-05 17:00",
-        "2019-05-06 18:00",
+        "2019-04-30",
+        "2019-05-01",
+        "2019-05-02",
+        "2019-05-03",
+        "2019-05-04",
+        "2019-05-05",
+        "2019-05-06",
     ],
+
+    y: []
+
 }
 
 function Trend() {
-    const [data] = useState([25, 50, 35, 15, 94, 10]);
-    // const [date] = useState(['10/1/2015', '10/2/2015', '10/3/2015', '10/4/2015', '10/5/2015', '10/6/2015', '10/7/2015', '10/8/2015', '10/9/2015', '10/10/2015', '10/11/2015', '10/12/2015', '10/13/2015', '10/14/2015', '10/15/2015', '10/16/2015']);
-    const [dummyData] = useState([
-        {date: '10/1/2015', value: 10 },
-        {date: '10/2/2015', value: 15 },
-        {date: '10/3/2015', value: 35 },
-        {date: '10/4/2015', value: 50 },
-        {date: '10/5/2015', value: 25 },
-        {date: '10/6/2015', value: 94 },
-        {date: '10/7/2015', value: 35 },
-        {date: '10/8/2015', value: 50 },
-        {date: '10/9/2015', value: 15 },
-        {date: '10/10/2015', value: 50 },
-    ])
+    const [myData, setMyData] = useState(dates)
+    const [othersData, setOthersData] = useState(dates)
     
     const handleClickAspect = (e) => {
         if (e === 'mental') {
-            console.log(mental)
+            const newMental = {x: dates.x, y: Object.values(mental_total.total_mean)}
+            const newOthersMental = {x: dates.x, y: Object.values(mental_others.total_mean)}
+            setMyData(newMental)
+            setOthersData(newOthersMental)
         }
     }
 
@@ -61,24 +61,32 @@ function Trend() {
             <div className="panels">
                 <h4 className="panel-title">Overall Trend</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
-                <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-                    <Button onClick={() => handleClickAspect('physical')}>Physical Health</Button>
-                    <Button onClick={() => handleClickAspect('mental')}>Mental Health</Button>
-                    <Button onClick={() => handleClickAspect('social')}>Social Health</Button>
-                </ButtonGroup>
+                <Button.Group variant="outlined" aria-label="outlined primary button group">
+                    <Button color='twitter' onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                    <Button color='twitter' onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                    <Button color='twitter' onClick={() => handleClickAspect('social')}>Social Health</Button>
+                </Button.Group>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
                     <Plot
                         data={[
                         {
-                            x: [1, 2, 3],
-                            y: [2, 6, 3],
+                            x: myData.x,
+                            y: myData.y,
                             type: 'scatter',
                             mode: 'lines+markers',
-                            marker: {color: 'red'},
+                            marker: {color: '#F88923'},
+                            name: 'You',
                         },
-                        {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
+                        {
+                            x: othersData.x,
+                            y: othersData.y,
+                            type: 'scatter',
+                            mode: 'lines+markers',
+                            marker: {color: 'gray'},
+                            name: "Other Users' Average",
+                        },
                         ]}
-                        layout={{width: 800, height: 600, title: 'A Fancy Plot'}}
+                        layout={{width: 1000, height: 600}}
                     />
                 </Box>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>

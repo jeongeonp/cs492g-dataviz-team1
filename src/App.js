@@ -11,6 +11,8 @@ import { TabContext, TabList, TabPanel} from '@mui/lab'
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import 'semantic-ui-css/semantic.min.css'
+
 
 function App() {
   const [value, setValue] = React.useState('1');
