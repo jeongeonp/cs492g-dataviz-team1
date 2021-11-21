@@ -19,7 +19,6 @@ function Trend() {
     const [data, setData] = useState([25, 50, 35, 15, 94, 10]);
     const svgRef = useRef(); // for the svg container
 
-
     useEffect(() => {
         // setting up the svg
         const w = 800;
