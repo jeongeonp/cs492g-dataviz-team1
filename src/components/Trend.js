@@ -1,90 +1,59 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { ButtonGroup, Button, Box } from '@mui/material'
-import TrendChart from './TrendChart'
-// import flatMap from "array.prototype.flatmap";
-import ViewColumnIcon from '@mui/icons-material/ViewColumn';
-import ViewAgendaIcon from '@mui/icons-material/ViewAgenda';
-import * as d3 from 'd3';
+import { Box } from '@mui/material'
+import { Button } from 'semantic-ui-react'
 
-// TrendChart Dummy data
-import schcData from "../dummyData/SCHC.json";
-import vcitData from "../dummyData/VCIT.json";
-import portfolioData from "../dummyData/PORTFOLIO.json";
 import './Pages.css';
 
-import data from "../dummyData/data";
-// flatMap.shim();
+import mental_p3012 from '../assets/mental-p3012.json';
+import mental_others from '../assets/mental-others.json';
+
+import Plotly from "plotly.js-basic-dist-min";
+import createPlotlyComponent from "react-plotly.js/factory";
+
+const Plot = createPlotlyComponent(Plotly);
+
+
+console.log(mental_others)
+console.log(Object.values(mental_others.total_mean))
+
+const times = Object.keys(mental_p3012.total_mean)
+var total = {}
+
+for (var t in times) {
+    //console.log(times[t])
+    total[times[t]] = mental_p3012.Valence[times[t]] + mental_p3012.Arousal[times[t]] + mental_p3012.Attention[times[t]] + mental_p3012.Stress[times[t]]
+}
+
+var mental_total = mental_p3012
+mental_total['Total'] = total
+
+var dates = {
+    x: [
+        "2019-04-30",
+        "2019-05-01",
+        "2019-05-02",
+        "2019-05-03",
+        "2019-05-04",
+        "2019-05-05",
+        "2019-05-06",
+    ],
+
+    y: []
+
+}
 
 function Trend() {
-    const [data, setData] = useState([25, 50, 35, 15, 94, 10]);
-    const svgRef = useRef(); // for the svg container
-
-    useEffect(() => {
-        // setting up the svg
-        const w = 800;
-        const h = 300;
-        const svg = d3.select(svgRef.current).attr('width', w).attr('height', h).style('background','#d3d3d3').style('margin', '50').style('overflow', 'visible');
-        // setting up the scaling
-        const xScale = d3.scaleLinear().domain([0, data.length - 1]).range([0, w])
-        const yScale = d3.scaleLinear().domain([0, h]).range([h, 0]); //range starts from top to bottom
-        const generateScaledLine = d3.line().x((d, i) => xScale(i)).y(yScale).curve(d3.curveCardinal); // plotting the lines using the scales we created
-
-        // setting the axes
-        const xAxis = d3.axisBottom(xScale).ticks(data.length).tickFormat(i => i + 1);
-        const yAxis = d3.axisLeft(yScale).ticks(5);
-        svg.append('g').call(xAxis).attr('transform', `translate(0, ${h})`);
-        svg.append('g').call(yAxis);
-
-        // setting up the data for the svg
-        svg.selectAll('.line').data([data]).join('path').attr('d', (d) => generateScaledLine(d)).attr('fill', 'none').attr('stroke', 'black');
-    }, [])
-
-    const drawGraph = (updated_data) => {
-        const w = 800;
-        const h = 300;
-        const svg = d3.select(svgRef.current).attr('width', w).attr('height', h).style('background','#d3d3d3').style('margin', '50').style('overflow', 'visible');
-        // setting up the scaling
-        const xScale = d3.scaleLinear().domain([0, updated_data.length - 1]).range([0, w])
-        const yScale = d3.scaleLinear().domain([0, h]).range([h, 0]); //range starts from top to bottom
-        const generateScaledLine = d3.line().x((d, i) => xScale(i)).y(yScale).curve(d3.curveCardinal); // plotting the lines using the scales we created
-
-        // setting the axes
-        const xAxis = d3.axisBottom(xScale).ticks(updated_data.length).tickFormat(i => i + 1);
-        const yAxis = d3.axisLeft(yScale).ticks(5);
-        svg.append('g').call(xAxis).attr('transform', `translate(0, ${h})`);
-        svg.append('g').call(yAxis);
-
-        // setting up the data for the svg
-        svg.selectAll('.line').data([updated_data]).join('path').attr('d', (d) => generateScaledLine(d)).attr('fill', 'none').attr('stroke', 'black');
-
-    }
-
-    // function regenerateData() {
-    //     const chartData = [];
-    //     for (let i = 0; i < 20; i++) {
-    //         const value = Math.floor(Math.random() * i + 3);
-    //         chartData.push({
-    //             label: i.toFixed,
-    //             value,
-    //             tooltipContent: `<b>x: </b>${i}<br><b>y: </b>${value}`
-    //         });
-    //     }
-    //     setData(chartData)
-    // }
-
-    const handleClickAspect = (aspect) => {
-        var updated_data = []
-        if (aspect == "physical") {
-            updated_data = [25, 50, 35, 15, 94, 10]
-        } else if (aspect == "mental") {
-            updated_data = [50, 100, 1, 5, 7, 3]
-        } else {
-            updated_data = [100, 30, 80, 90, 200, 130]
+    const [myData, setMyData] = useState(dates)
+    const [othersData, setOthersData] = useState(dates)
+    
+    const handleClickAspect = (e) => {
+        if (e === 'mental') {
+            const newMental = {x: dates.x, y: Object.values(mental_total.total_mean)}
+            const newOthersMental = {x: dates.x, y: Object.values(mental_others.total_mean)}
+            setMyData(newMental)
+            setOthersData(newOthersMental)
         }
-        setData(updated_data);
-        drawGraph(updated_data);
     }
-
 
     return (
         <div>
@@ -92,22 +61,44 @@ function Trend() {
             <div className="panels">
                 <h4 className="panel-title">Overall Trend</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
-                <ButtonGroup variant="outlined" aria-label="outlined primary button group">
-                    <Button onClick={() => handleClickAspect('physical')}>Physical Health</Button>
-                    <Button onClick={() => handleClickAspect('mental')}>Mental Health</Button>
-                    <Button onClick={() => handleClickAspect('social')}>Social Health</Button>
-                </ButtonGroup>
+                <Button.Group variant="outlined" aria-label="outlined primary button group">
+                    <Button color='twitter' onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                    <Button color='twitter' onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                    <Button color='twitter' onClick={() => handleClickAspect('social')}>Social Health</Button>
+                </Button.Group>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
-                    <svg ref={svgRef}></svg>
+                    <Plot
+                        data={[
+                        {
+                            x: myData.x,
+                            y: myData.y,
+                            type: 'scatter',
+                            mode: 'lines+markers',
+                            marker: {color: '#F88923'},
+                            name: 'You',
+                        },
+                        {
+                            x: othersData.x,
+                            y: othersData.y,
+                            type: 'scatter',
+                            mode: 'lines+markers',
+                            marker: {color: 'gray'},
+                            name: "Other Users' Average",
+                        },
+                        ]}
+                        layout={{width: 1000, height: 600}}
+                    />
+                </Box>
+                <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
                 </Box>
             </div>
             <div className="panels">
                 <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                     <h4 className="panel-title">Detailed trends for each metric</h4>
-                    <ButtonGroup sx={{ m: 2 }} variant="outlined" aria-label="outlined primary button group">
+                    {/*<ButtonGroup sx={{ m: 2 }} variant="outlined" aria-label="outlined primary button group">
                         <Button startIcon={<ViewAgendaIcon />}>Vertical View</Button>
                         <Button startIcon={<ViewColumnIcon/>}>Horizontal View</Button>
-                    </ButtonGroup>
+                    </ButtonGroup>*/}
                 </Box>
                 <div style={{border: '0px solid red', height: '93%'}}>
 
