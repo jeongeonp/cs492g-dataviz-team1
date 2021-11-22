@@ -19,11 +19,6 @@ console.log(Object.values(mental_others.total_mean))
 const times = Object.keys(mental_p3012.total_mean)
 var total = {}
 
-for (var t in times) {
-    //console.log(times[t])
-    total[times[t]] = mental_p3012.Valence[times[t]] + mental_p3012.Arousal[times[t]] + mental_p3012.Attention[times[t]] + mental_p3012.Stress[times[t]]
-}
-
 var mental_total = mental_p3012
 mental_total['Total'] = total
 
