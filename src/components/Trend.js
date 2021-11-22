@@ -7,8 +7,8 @@ import './Pages.css';
 import physical from '../assets/physical_agg.json';
 import mental from '../assets/mental_agg.json';
 
-import mental_p3012 from '../assets/mental-p3012.json';
-import mental_others from '../assets/mental-others.json';
+//import mental_p3012 from '../assets/mental-p3012.json';
+//import mental_others from '../assets/unused/mental-others.json';
 
 import Plotly from "plotly.js-basic-dist-min";
 import createPlotlyComponent from "react-plotly.js/factory";
@@ -20,8 +20,8 @@ console.log(physical)
 
 var total = {}
 
-var mental_total = mental_p3012
-mental_total['Total'] = total
+//var mental_total = mental_p3012
+//mental_total['Total'] = total
 
 var dates = {
     x: [
@@ -116,7 +116,7 @@ function Trend() {
         <div>
             <h2>Your Trends Overtime</h2>
             <div className="panels">
-                <h4 className="panel-title">Overall Trend</h4>
+                <h4 className="panel-title">Overall Trend <Button circular basic size='mini' icon='help circle' style={{padding: '0px'}}></Button></h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                 <Button.Group variant="outlined" aria-label="outlined primary button group">
                     <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
@@ -143,7 +143,7 @@ function Trend() {
                             name: "Other Users' Average",
                         },
                         ]}
-                        layout={{width: 1000, height: 600, title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", yaxis: {range: [-4, 4]}}}
+                        layout={{width: 800, height: 500, title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", yaxis: {range: [-4, 4]}}}
                     />
                 </Box>
             </div>
