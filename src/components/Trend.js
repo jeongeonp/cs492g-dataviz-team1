@@ -41,15 +41,41 @@ var dates = {
 function Trend() {
     const [myData, setMyData] = useState(dates)
     const [othersData, setOthersData] = useState(dates)
-    const [multipleMyData, setMultipleMyData] = useState(null)
-    const [multipleOthersData, setMultipleOthersData] = useState(null)
 
-    const [selectedAspect, setSelectedAspect] = useState('mental')
+    const [multipleMy, setMultipleMy] = useState(null)
+    const [multipleOthers, setMultipleOthers] = useState(null)
+
+    const [selectedAspect, setSelectedAspect] = useState('physical')
 
     // move to hook later
     const [numMetric, setNumMetric] = useState({physical: ['Calories', 'Pedometer'], mental: ['Valence', 'Arousal', 'Attention', 'Stress'], social: ['Calllog', 'Messagelog', 'SNSlog']})
 
     useEffect(() => {
+        const newMultiple = {physical: {}, mental: {}}
+        const newOthersMultiple = {physical: {}, mental: {}}
+        console.log(numMetric[selectedAspect])
+
+        for (var i in numMetric['physical']) {
+            newMultiple['physical'][numMetric['physical'][i]] = {x: dates.x, y: Object.values(physical['p3012_'+numMetric['physical'][i]])}
+            newOthersMultiple['physical'][numMetric['physical'][i]] = {x: dates.x, y: Object.values(physical['others_'+numMetric['physical'][i]])}
+        }
+        for (var i in numMetric['mental']) {
+            newMultiple['mental'][numMetric['mental'][i]] = {x: dates.x, y: Object.values(mental['p3012_'+numMetric['mental'][i]])}
+            newOthersMultiple['mental'][numMetric['mental'][i]] = {x: dates.x, y: Object.values(mental['others_'+numMetric['mental'][i]])}
+        }
+        /*
+        for (var i in numMetric['social']) {
+            newMultiple['social'][numMetric['social'][i]] = {x: dates.x, y: Object.values(social['p3012_'+numMetric['social'][i]])}
+            newOthersMultiple['social'][numMetric['social'][i]] = {x: dates.x, y: Object.values(social['others_'+numMetric['social'][i]])}
+        }
+        */
+        
+        //console.log(newMultiple)
+        //console.log(newOthersMultiple)
+        setMultipleMy(newMultiple)
+        setMultipleOthers(newOthersMultiple)
+
+
         console.log('selectedAspect changed')
         changeAspect(selectedAspect)
     }, [selectedAspect])
@@ -60,39 +86,24 @@ function Trend() {
 
     const changeAspect = (e) => {
         if (e === 'physical') {
+            console.log(physical)
             const newPhysical = {x: dates.x, y: Object.values(physical.z_physical)}
             const newOthersPhysical = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
-            const newMultiplePhysical = {}
-            const newOthersMultiplePhysical = {}
-            for (var i in numMetric[selectedAspect]) {
-                newMultiplePhysical[numMetric['physical'][i]] = {x: dates.x, y: Object.values(physical['p3012_'+numMetric['physical'][i]])}
-                newOthersMultiplePhysical[numMetric['physical'][i]] = {x: dates.x, y: Object.values(physical['others_'+numMetric['physical'][i]])}
-            }
+
             setMyData(newPhysical)
             setOthersData(newOthersPhysical)
-            setMultipleMyData(newMultiplePhysical)
-            setMultipleOthersData(newOthersMultiplePhysical)
+
+            //console.log(e+ ' change done!')
         }
         
         if (e === 'mental') {
             const newMental = {x: dates.x, y: Object.values(mental.z_mental)}
             const newOthersMental = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
-            const newMultipleMental = {}
-            const newOthersMultipleMental = {}
-            for (var i in numMetric[selectedAspect]) {
-                newMultipleMental[numMetric['mental'][i]] = {x: dates.x, y: Object.values(mental['p3012_'+numMetric['mental'][i]])}
-                newOthersMultipleMental[numMetric['mental'][i]] = {x: dates.x, y: Object.values(mental['others_'+numMetric['mental'][i]])}
-            }
-            
-            //console.log(newMultipleMental)
-            //console.log(newOthersMultipleMental)
 
             setMyData(newMental)
             setOthersData(newOthersMental)
-            setMultipleMyData(newMultipleMental)
-            setMultipleOthersData(newOthersMultipleMental)
 
-            numMetric[selectedAspect].map((e) => {console.log(newMultipleMental[e].x)})
+            //console.log(e+' change done!')
         }
 
         if (e === 'social') {
@@ -108,9 +119,9 @@ function Trend() {
                 <h4 className="panel-title">Overall Trend</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                 <Button.Group variant="outlined" aria-label="outlined primary button group">
-                    <Button color='twitter' onClick={() => handleClickAspect('physical')}>Physical Health</Button>
-                    <Button color='twitter' onClick={() => handleClickAspect('mental')}>Mental Health</Button>
-                    <Button color='twitter' onClick={() => handleClickAspect('social')}>Social Health</Button>
+                    <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                    <Button color={selectedAspect === 'mental'? 'twitter': ''} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                    <Button color={selectedAspect === 'social'? 'twitter': ''} onClick={() => handleClickAspect('social')}>Social Health</Button>
                 </Button.Group>
                 <Box sx={{ my: "1.5rem" }} style={{border: '0px solid red', height: '93%'}}>
                     <Plot
@@ -141,21 +152,22 @@ function Trend() {
                     <h4 className="panel-title">Detailed trends for each metric</h4> 
                 </Box>
                 <div style={{border: '0px solid red', height: '93%'}}>
-                    {multipleMyData !== null && multipleOthersData !== null
+                    {multipleMy !== null && multipleOthers !== null
                     ? numMetric[selectedAspect].map((e) => (
-                        <Plot
+                        multipleMy[selectedAspect] !== null && multipleOthers[selectedAspect] !== null
+                        ? <Plot key={e}
                             data={[
                             {
-                                x: multipleMyData[e].x,
-                                y: multipleMyData[e].y,
+                                x: multipleMy[selectedAspect][e].x,
+                                y: multipleMy[selectedAspect][e].y,
                                 type: 'scatter',
                                 mode: 'lines+markers',
                                 marker: {color: '#F88923'},
                                 name: 'You',
                             },
                             {
-                                x: multipleOthersData[e].x,
-                                y: multipleOthersData[e].y,
+                                x: multipleOthers[selectedAspect][e].x,
+                                y: multipleOthers[selectedAspect][e].y,
                                 type: 'scatter',
                                 mode: 'lines+markers',
                                 marker: {color: 'gray'},
@@ -164,8 +176,9 @@ function Trend() {
                             ]}
                             layout={{width: 500, height: 300, title: e}}
                         />
+                        : <div>No data to show!</div>
                     ))
-                    : null
+                    : <div>No data to show!</div>
                     }
                     
                 </div>
