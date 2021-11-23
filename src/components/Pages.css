@@ -39,12 +39,12 @@
 .x .axis path {
     display: none;
 }
-
+/*
 .line {
     fill: none;
     stroke: steelblue;
     stroke-width: 1.5px;
-}
+}*/
 
 /* tooltip */
 .overlay {
@@ -80,7 +80,7 @@
 .tooltip-date, .tooltip-likes {
     font-weight: bold;
 }
-
+/*
 svg {
   border: 2px solid darkgreen;
 }
@@ -90,7 +90,7 @@ svg {
   stroke: green;
   stroke-width: 4;
 }
-
+*/
 .overlay {
   fill: none;
   pointer-events: all;
@@ -108,6 +108,7 @@ svg {
 }
 
 /* comment */
+/*
 svg {
     border: 0px solid darkgreen;
   }
@@ -117,7 +118,7 @@ svg {
     stroke: green;
     stroke-width: 4;
   }
-  
+  */
   .overlay {
     fill: none;
     pointer-events: all;

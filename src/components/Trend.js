@@ -172,7 +172,12 @@ function Trend() {
                             name: "Other Users' Average",
                         },
                         ]}
-                        layout={{width: 800, height: 500, title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", yaxis: {range: [-4, 4], title: 'z-score'}}}
+                        layout={{
+                            width: 800, 
+                            height: 500, 
+                            title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", 
+                            yaxis: {range: [-4, 4], title: 'z-score'}
+                        }}
                     />
                 </Box>
             </div>
@@ -184,10 +189,11 @@ function Trend() {
                 </h4> 
                 <Button.Group style={{marginTop: '10px'}} size='tiny'>
                     <Button color={mode === 'horizontal'? 'twitter': ''} icon onClick={() => changeMode('horizontal')}>
-                        <Icon name='ellipsis horizontal' />
+                        {/*<Icon name='bars' />*/}
+                        <Icon name="block layout"/>
                     </Button>
                     <Button color={mode === 'vertical'? 'twitter': ''} icon onClick={() => changeMode('vertical')}>
-                        <Icon name='ellipsis vertical' />
+                        <Icon name='content' />
                     </Button>
                 </Button.Group>
                 <div style={{border: '0px solid red', height: '93%'}}>
