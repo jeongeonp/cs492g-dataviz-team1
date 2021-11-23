@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Overview from './components/Overview';
 import Trend from './components/Trend';
-import Activities from './components/Activities';
+import Activities from './components/Activities-lib';
 
 import { Grid, Box, Tab, Tabs } from '@mui/material'
 import { TabContext, TabList, TabPanel} from '@mui/lab'
