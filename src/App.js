@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './App.css';
 import Overview from './components/Overview';
@@ -14,34 +14,35 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import 'semantic-ui-css/semantic.min.css'
 
-function reducer(state, action) {
-  return state;
-}
-
-
-const initialActivatedElements = {
+const initialActivatedEle = {
   physical: {
-    calories: true,
-    pedometer: true,
+    Calories: true,
+    Pedometer: true,
   },
   mental: {
-    valence: true,
-    arousal: true,
-    attention: true,
-    stress: true,
+    Valence: true,
+    Arousal: true,
+    Attention: true,
+    Stress: true,
   }, 
   social: {
-    calllog: true,
-    messagelog: true,
-    snsprop: true,
+    CallLog: true,
+    MessageLog: true,
+    SNSProp: true,
   }
+};
+
+const initialGoals = {
+  physical: 0,
+  mental: 0,
+  social: 0
 }
 
-
-
 function App() {
-  const [activatedElements, setActivatedElements] = useReducer(reducer, initialActivatedElements);
   const [value, setValue] = useState('1');
+
+  const [goals, setGoals] = useState(initialGoals)
+  const [activatedEle, setActivatedEle] = useState(initialActivatedEle);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -56,7 +57,12 @@ function App() {
             <Grid item xs='auto'>
               <h3>CS492(G) Team 1</h3>
             </Grid> 
-              <EditModal />
+              <EditModal 
+                activatedEle = {activatedEle}
+                changeEle = {setActivatedEle}
+                goals = {goals}
+                changeGoals = {setGoals}
+              />
             <Grid>
             </Grid> 
               <HelpModal />

@@ -1,12 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, } from 'react';
 
 import { Button, Header, Form, Modal, Input } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 
-function EditModal() {
-  // const [goals, setGoals] = useState[{'physical': 0, 'mental': 0, 'social': 0}]
+const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
   const [open, setOpen] = useState(false);
+
+  const [physicalGoal, setPhysicalGoal] = useState('0');
+  const [mentalGoal, setMentalGoal] = useState('0');
+  const [socialGoal, setSocialGoal] = useState('0');
+
+  const [physicalEle, setPhysicalEle] = useState();
+  const [mentalEle, setMentalEle] = useState();
+  const [socialEle, setSocialEle] = useState();
+
+  const handleDone = () => {
+
+  }
+
+
+  const handleChangeElements = () => {
+
+  }
+
+  const handleChangeGoals = () => {
+
+  }
 
   return (
     <Modal
@@ -20,23 +40,28 @@ function EditModal() {
         <Modal.Description>
           <Header>Physical</Header>
           <Input 
-            error='Please enter your last name' 
             placeholder='-100 ~ 100'
-            label='Goal' />
+            value={physicalGoal}
+            onChange={({ target: { value } }) => setPhysicalGoal(value)}
+          />
           <Form.Checkbox label='Calories'/>
           <Form.Checkbox label='Pedometer'/>
           <Header>Mental</Header>
-          <Form.Field>
-            <Input placeholder='-100 ~ 100' />
-          </Form.Field>
+          <Input 
+            placeholder='-100 ~ 100'
+            value={mentalGoal}
+            onChange={({ target: { value } }) => setMentalGoal(value)}
+          />
           <Form.Checkbox label='Valence'/>
           <Form.Checkbox label='Arousal'/>
           <Form.Checkbox label='Attention'/>
           <Form.Checkbox label='Stress'/>
           <Header>Social</Header>
-          <Form.Field>
-            <Input placeholder='-100 ~ 100' />
-          </Form.Field>
+          <Input 
+            placeholder='-100 ~ 100'
+            value={socialGoal}
+            onChange={({ target: { value } }) => setSocialGoal(value)}
+          />
           <Form.Checkbox label='Call Log'/>
           <Form.Checkbox label='Message Log'/>
           <Form.Checkbox label='SNS App Usage Ratio'/>
