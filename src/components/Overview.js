@@ -1,7 +1,9 @@
 import React, {useRef, useState, useEffect} from 'react';
 import './Pages.css';
+import GoalCard from './GoalCard.js'
 // import * as d3 from "d3";
-import { Grid } from '@mui/material'
+import { Grid, Box } from '@mui/material'
+import { Button, Popup, Icon } from 'semantic-ui-react'
 // import { ReactRadarChart } from 'd3-radarchart';
 
 import createPlotlyComponent from 'react-plotly.js/factory';
@@ -276,13 +278,19 @@ function Overview() {
         console.log(e)
     }
 
+    const metric = ['Emotion Level', 'Disturbance level']
+
     return (
         <div>
             <h2>Overview Page</h2>
             <div className="panels">
                 <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
                     <Grid item style={{border: '0px solid black'}}>
-                        <h4 className="panel-title">HEALTH TRIANGLE</h4>
+                    <h4 className="panel-title">
+                        <span>HEALTH TRIANGLE </span>
+                        <span style={{width: '2px'}}></span>
+                        <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    </h4>
                         <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                         <Plot
                             data={scatterData}
@@ -295,11 +303,23 @@ function Overview() {
                         <div id="graphDiv"></div> */}
                     </Grid>
                     <Grid item style={{border: '0px solid black'}}>
-                        <h4 className="panel-title" style={{verticalAlign: 'top'}}>CURRENT GOALS</h4>
-                        <div style={{width: '500px', height: '550px'}}></div>
+                        <h4 className="panel-title">
+                            <span>CURRENT GOALS </span>
+                            <span style={{width: '2px'}}></span>
+                            <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                        </h4>
+                        <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
+                            <GoalCard health="Mental" percent="90%" metric={metric} />
+                            <GoalCard health="Physical" percent="90%" metric={metric} />
+                            <GoalCard health="Social" percent="90%" metric={metric} />
+                        </div>
                     </Grid>
                     <Grid item style={{border: '0px solid black', height: '40%'}}>
-                        <h4 className="panel-title">ASPECT PERCENTAGE</h4>
+                        <h4 className="panel-title">
+                            <span>ASPECT PERCENTAGE </span>
+                            <span style={{width: '2px'}}></span>
+                            <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                        </h4>
                         <h2 style={{margin: '0'}}>Physical</h2>
                         <Plot
                             data={barChartData}
