@@ -5,6 +5,8 @@ import './App.css';
 import Overview from './components/Overview';
 import Trend from './components/Trend';
 import Activities from './components/Activities-lib';
+import EditModal from './components/EditModal';
+import HelpModal from './components/HelpModal';
 
 import { Grid, Box, Tab, Tabs } from '@mui/material'
 import { TabContext, TabList, TabPanel} from '@mui/lab'
@@ -14,12 +16,14 @@ import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import 'semantic-ui-css/semantic.min.css'
 
 
+
 function App() {
-  const [value, setValue] = React.useState('1');
+  const [value, setValue] = useState('1');
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
 
   return (
     <div >
@@ -29,6 +33,12 @@ function App() {
             <Grid item xs='auto'>
               <h3>CS492(G) Team 1</h3>
             </Grid> 
+              <EditModal />
+            <Grid>
+            </Grid> 
+              <HelpModal />
+            <Grid>
+            </Grid>
             <Grid item xs='auto'>
             <TabList onChange={handleChange} aria-label="lab API tabs example" style={{}}>
               <Tab icon={<ChangeHistoryIcon />} iconPosition="start" label="Overview" value="1" />
