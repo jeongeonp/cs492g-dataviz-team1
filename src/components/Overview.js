@@ -218,21 +218,25 @@ function Overview({activatedEle, initialGoals}) {
     const scatterData = [
         {
             type: 'scatterpolar',
-            mode: 'lines',
+            mode: 'lines+markers+text',
             r: [0, 0, 0],
             theta: ['Social', 'Physical', 'Mental'],
             fill: 'toself',
             name: 'Other Users',
-            // subplot: "polar2"
+            line: {
+                color: 'gray'
+            },
         },
         {
             type: 'scatterpolar',
-            mode: 'lines',
+            mode: 'lines+markers+text',
             r: user_z_value.map(w => w*250),
             theta: ['Social', 'Physical', 'Mental'],
             fill: 'toself',
             name: 'You',
-            // subplot: "polar"
+            line: {
+                color: '#F88923'
+            },
         },
         {
             type: 'scatterpolar',
