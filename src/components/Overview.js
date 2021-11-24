@@ -352,7 +352,7 @@ function Overview({activatedEle}) {
                         <h4 className="panel-title">
                             <span>ASPECT PERCENTAGE </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content='This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data.' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content="This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <h2 style={{margin: '0'}}>Physical</h2>
                         <Plot
