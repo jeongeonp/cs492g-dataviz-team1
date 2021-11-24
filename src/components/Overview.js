@@ -13,16 +13,15 @@ import Plotly from 'plotly.js';
 const Plot = createPlotlyComponent(Plotly);
 
 function Overview({activatedEle, initialGoals}) {
-    // const activatedEle = props.activatedEle;
-    // const initialGoals = props.initialGoals;
-
     const [metric, changeMetrics] = useState({mental:[], physical: [], social: []});
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
     const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
     const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
     const [selectedAspect, setSelectedAspect] = useState('physical')
-    const [goals, setGoals] = useState({physical: 0, social: 0, mental: 0})
-    // const [goalInGraph, setGoalInGraph] = useState([0, 0, 0])
+    const [goals, setGoals] = useState(initialGoals);
+
+    const goalsString = JSON.stringify(initialGoals);
+    console.log(goalsString)
 
     // aggregated data
     const mental_data = require('../assets/mental_agg_week.json');
@@ -209,16 +208,11 @@ function Overview({activatedEle, initialGoals}) {
 
     // changing goals
     useEffect(() => {
-        // console.log("initialGoals: ", initialGoals)
+        var newGoals = {physical: initialGoals['physical'], mental: initialGoals['mental'], social: initialGoals['social']}
+        setGoals(newGoals);
+        console.log(newGoals)
+    }, [goalsString])
 
-        setGoals({physical: initialGoals['physical'], mental: initialGoals['mental'], social: initialGoals['social']})
-        console.log("goals: ", goals);
-        // setGoalInGraph([goals['social'], goals['physical'], goals['mental']]);
-    }, [initialGoals])
-    // console.log("metric: ", metric);
-    // console.log("metric_values", metric_values);
-    // console.log("user_z_value ", user_z_value);
-    // console.log("allText: ", allText);
 
     // Polar Chart
     const scatterData = [
@@ -243,7 +237,7 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'markers',
-            r: [goals['physical'], goals['mental'], goals['social']],
+            r: [goals['social'], goals['physical'], goals['mental']],
             theta: ['Social', 'Physical', 'Mental'],
             marker: {
                 symbol: "square",

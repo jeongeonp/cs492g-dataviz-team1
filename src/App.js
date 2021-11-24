@@ -33,9 +33,9 @@ const initialActivatedEle = {
 };
 
 const initialGoals = {
-  physical: 15,
-  mental: 50,
-  social: 30
+  physical: 0,
+  mental: 0,
+  social: 0
 }
 
 function App() {
@@ -76,7 +76,7 @@ function App() {
           </Grid>
         </Box>
         <TabPanel value="1" style={{border: '0px solid red'}}>
-          <Overview activatedEle = {activatedEle} initialGoals={initialGoals}/>
+          <Overview activatedEle = {activatedEle} initialGoals={goals}/>
         </TabPanel>
         <TabPanel value="2">
           <Trend 
