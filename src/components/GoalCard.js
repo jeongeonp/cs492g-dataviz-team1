@@ -19,7 +19,8 @@ const bull = (
 export default function BasicCard(props) {
     const health = props.health;
     const percent = props.percent;
-    const metric = props.metric.toString();
+    const metric = props.metric.filter(word => word != 'Overall').toString();
+    // const metric = props.metric.toString();
     return (
         <Card style={{ marginTop: '0.5em', marginBottom: '0.5em'}} sx={{ minWidth: 250 }} variant="outlined">
             <CardContent>
