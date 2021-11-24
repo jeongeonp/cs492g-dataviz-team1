@@ -18,6 +18,7 @@ function Overview({activatedEle}) {
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
     const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
     const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
+    const [selectedAspect, setSelectedAspect] = useState('physical')
 
     // aggregated data
     const mental_data = require('../assets/mental_agg_week.json');
@@ -259,15 +260,15 @@ function Overview({activatedEle}) {
     // Bar Data
     const barChartData = [{
         type: 'bar',
-        x: metric_values['mental'],
+        x: metric_values[selectedAspect],
         // y: mental_metric,
-        y: metric['mental'],
+        y: metric[selectedAspect],
         z: zValues_mental,
-        text: allText['mental'],
+        text: allText[selectedAspect],
         textposition: "none",
         orientation: 'h',
         marker: {
-            color: metric_values['mental'].map(function(v) {
+            color: metric_values[selectedAspect].map(function(v) {
                 return v < 0 ? '#FF8974': '#01C696' 
             })
         },
@@ -295,7 +296,7 @@ function Overview({activatedEle}) {
         yaxis: {
             title: "Chosen Metric",
             zeroline: false,
-            categoryarray: metric['mental'],
+            categoryarray: metric[selectedAspect],
             categoryorder: "array"
         }
     }
@@ -310,15 +311,12 @@ function Overview({activatedEle}) {
         setHighlighted(hovered);
     }
 
-    // const clickAspect = (e) => {
-    //     console.log(e)
-    // }
+    // handle click aspect for bar chart
+    const handleClickAspect = (e) => {
+        setSelectedAspect(e)
+    }
 
-    // const metric = ['Emotion Level', 'Disturbance level']
 
-    // radar graph: z_mental * 25
-    // bar graph -> specifics z_metric
-    // on bar graph, show z_stress and when hovering show p3012_stress and others info (because they have really different ranges)
     return (
         <div>
             <h2>Overview Page</h2>
@@ -350,11 +348,16 @@ function Overview({activatedEle}) {
                     </Grid>
                     <Grid item style={{border: '0px solid black', height: '40%'}}>
                         <h4 className="panel-title">
-                            <span>ASPECT PERCENTAGE </span>
+                            <span style={{marginBottom: '1em'}}>ASPECT PERCENTAGE </span>
                             <span style={{width: '2px'}}></span>
                             <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
-                        <h2 style={{margin: '0'}}>Physical</h2>
+                        <Button.Group variant="outlined" aria-label="outlined primary button group" size='tiny'>
+                            <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                            <Button color={selectedAspect === 'mental'? 'twitter': ''} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                            <Button color={selectedAspect === 'social'? 'twitter': ''} onClick={() => handleClickAspect('social')}>Social Health</Button>
+                        </Button.Group>
+                        {/* <h2 style={{margin: '0'}}>Physical</h2> */}
                         <Plot
                             data={barChartData}
                             layout={barLayout}
