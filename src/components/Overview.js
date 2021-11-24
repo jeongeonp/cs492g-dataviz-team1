@@ -340,7 +340,7 @@ function Overview({activatedEle}) {
                         <h4 className="panel-title">
                             <span>CURRENT GOALS </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content="This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
                             <GoalCard health="Mental" percent="90%" metric={metric} />
@@ -352,7 +352,7 @@ function Overview({activatedEle}) {
                         <h4 className="panel-title">
                             <span>ASPECT PERCENTAGE </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content='This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data.' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <h2 style={{margin: '0'}}>Physical</h2>
                         <Plot
