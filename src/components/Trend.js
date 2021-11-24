@@ -74,7 +74,7 @@ function Trend({activatedEle}) {
 
     // Editing with edit mode
     useEffect(() => {
-        console.log(activatedEle)
+        // console.log(activatedEle)
         const newPhysical = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v]) // ['caloreis', 'pedometer']
         const newMental = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
         const newSocial = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
@@ -88,7 +88,7 @@ function Trend({activatedEle}) {
         //console.log(social)
 
         changeAspect(selectedAspect)
-        console.log("CURRENTLY SELECTED ELEMENT", selectedAspect)
+        // console.log("CURRENTLY SELECTED ELEMENT", selectedAspect)
 
     }, [activatedEle])
 
