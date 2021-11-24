@@ -207,10 +207,10 @@ function Trend({activatedEle}) {
                 <h4 className="panel-title">
                     <span>Overall Trend </span>
                     <span style={{width: '2px'}}></span>
-                    <Popup content='This ..' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    <Popup content="This panel shows an overall trend graph for each of the health aspect. The aggregated values are represented in the form of z-score, in comparison with other people's average." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
 
                 </h4>
-                <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
+                <p className="panel-date">May 2019, Week 1 (April 30th - May 6th)</p>
                 <Button.Group variant="outlined" aria-label="outlined primary button group" size='tiny'>
                     <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
                     <Button color={selectedAspect === 'mental'? 'twitter': ''} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
@@ -249,7 +249,7 @@ function Trend({activatedEle}) {
                 <h4 className="panel-title">
                     <span>Detailed trends for each metric </span>
                     <span style={{width: '2px'}}></span>
-                    <Popup content='This ..' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    <Popup content="This panel contains small multiples to show the trend of each element composing the health aspects. Here, the actual value for your own data as well as other's average data is shown." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                 </h4> 
                 <Button.Group style={{marginTop: '10px'}} size='tiny'>
                     <Button color={mode === 'horizontal'? 'twitter': ''} icon onClick={() => changeMode('horizontal')}>
