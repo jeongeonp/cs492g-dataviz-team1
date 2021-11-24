@@ -78,7 +78,7 @@ function App() {
           </Grid>
         </Box>
         <TabPanel value="1" style={{border: '0px solid red'}}>
-          <Overview />
+          <Overview activatedEle = {activatedEle}/>
         </TabPanel>
         <TabPanel value="2">
           <Trend 
