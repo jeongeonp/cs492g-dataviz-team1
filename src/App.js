@@ -86,7 +86,9 @@ function App() {
           />
         </TabPanel>
         <TabPanel value="3">
-          <Activities />
+          <Activities 
+            activatedEle = {activatedEle}
+          />
         </TabPanel>
       </TabContext>
     </div>

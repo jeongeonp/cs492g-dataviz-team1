@@ -1,14 +1,31 @@
-import React, { useRef, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
+import Slider from "@material-ui/core/Slider";
+
 import { ResponsiveCirclePackingCanvas } from '@nivo/circle-packing';
 
 import './Pages.css';
 
 import activity from '../assets/overall_cmp.json';
 
-console.log(activity)
 
-function Activities() {
-    const [numElement, setNumElement] = useState(6)
+function Activities(activatedEle) {
+    const [numElement, setNumElement] = useState()
+
+    useEffect(() => {
+        setNumElement(getActivatedEleNum(activatedEle));
+        console.log(activity)
+    }, [])
+
+    const getActivatedEleNum = (activatedEle) => {
+        var str = JSON.stringify(activatedEle);
+        var initial_count = (str.split('true')).length - 1
+        return initial_count 
+    }
+
+    const separateData = (activatedEle) => {
+        
+
+    }
 
     const good_data = {
         "name": "root",
@@ -77,11 +94,11 @@ function Activities() {
             
         ]
     }
-
     
 
-   
-    useEffect(() => {})
+    const handleSliderChange = (event, newValue) => {
+        setNumElement(newValue);
+    };
         
     return (
         <div>
@@ -89,8 +106,24 @@ function Activities() {
             <div className="bubbleContainer">
                 <h4 className="panel-title">Overall Trend</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
-                <div className="controlBar"></div>
+                <div className="controlBar">
+                    <Slider 
+                        key={`slider-${numElement}`}
+                        aria-label="Num. of Elements"
+                        step={1} 
+                        marks
+                        orientation="vertical"
+                        defaultValue={numElement}
+                        valueLabelDisplay="on"
+                        min={2}
+                        max={9}
+                        onChange={handleSliderChange}
+                    /> 
+                    <p>No. of <br/> elements<br/> shown</p>
+                </div>
+
                 <div className="goodBubble">
+                    <h3>Better</h3>
                     <ResponsiveCirclePackingCanvas
                         data={good_data}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
@@ -104,17 +137,19 @@ function Activities() {
                         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.3 ] ] }}
                         animate={true}
                         tooltip={(input) => {
-                            console.log(input)
                             return(
-                            <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '1px' }}>
-                                {input.data.p3012}: <b>{input.data.others}</b>
+                            <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '5px' }}>
+                                <b>{input.data.name}</b> <br/>
+                                my {input.data.p3012} <br/>
+                                others {input.data.others}
                             </div>
                             )
                         }}
                     />
                 </div>
                 <div className="badBubble">
-                    {/*
+                    <h3>Worse</h3>
+                    
                     <ResponsiveCirclePackingCanvas
                         data={bad_data}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
@@ -127,13 +162,16 @@ function Activities() {
                         labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 2.4 ] ] }}
                         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.3 ] ] }}
                         animate={true}
-                        tooltip={({ id, value }) => (
-                            <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '1px' }}>
-                                {id}: <b>{value}</b>
+                        tooltip={(input) => {
+                            return(
+                            <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '5px' }}>
+                                my {input.data.name} <b>{input.data.p3012}</b> <br/>
+                                others {input.data.name} <b>{input.data.others}</b>
                             </div>
-                        )}
+                            )
+                        }}
                     />
-                        */}
+                       
                 </div>
             </div>
             <div className="bubbleInfo">

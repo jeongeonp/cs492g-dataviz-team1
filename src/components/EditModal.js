@@ -4,18 +4,27 @@ import { Button, Header, Form, Modal, Input,  Popup, Icon } from 'semantic-ui-re
 import 'semantic-ui-css/semantic.min.css'
 
 
-const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
+function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
   const [open, setOpen] = useState(false);
 
-  const [physicalGoal, setPhysicalGoal] = useState('0');
-  const [mentalGoal, setMentalGoal] = useState('0');
-  const [socialGoal, setSocialGoal] = useState('0');
+  const [physicalGoal, setPhysicalGoal] = useState(goals.physical);
+  const [mentalGoal, setMentalGoal] = useState(goals.mental);
+  const [socialGoal, setSocialGoal] = useState(goals.social);
 
   const [physicalEle, setPhysicalEle] = useState(activatedEle.physical);
   const [mentalEle, setMentalEle] = useState(activatedEle.mental);
   const [socialEle, setSocialEle] = useState(activatedEle.social);
 
+  const [physicalGoalValid, setPhysicalGoalValid] = useState(true);
+  const [mentalGoalValid, setMentalGoalValid] = useState(true);
+  const [socialGoalValid, setSocialGoalValid] = useState(true);
+
+  const [physicalEleValid, setPhysicalEleValid] = useState(true);
+  const [mentalEleValid, setMentalEleValid] = useState(true);
+  const [socialEleValid, setSocialEleValid] = useState(true);
+
   const handleDone = () => {
+    var check = physicalEleValid && mentalGoalValid && socialGoalValid && physicalEleValid && mentalEleValid && socialEleValid;
 
     var updatedGoal = {
       physical: parseInt(physicalGoal), 
@@ -29,12 +38,55 @@ const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
       social: socialEle
     };
 
-    console.log(updatedGoal)
-    console.log(updatedEle)
+    if (check) {
+      changeGoals(updatedGoal);
+      changeEle(updatedEle);
+      setOpen(false);
+    }
+  };
 
-    changeGoals(updatedGoal);
-    changeEle(updatedEle);
+  const handleCancel = () => {
+    setPhysicalGoal(goals.physical)
+    setMentalGoal(goals.mental)
+    setSocialGoal(goals.social)
+
+    setPhysicalEle(activatedEle.physical)
+    setMentalEle(activatedEle.mental)
+    setSocialEle(activatedEle.social)
+
     setOpen(false);
+  };
+
+  const handlePhysicalEleChange = (ele) => {
+
+    setPhysicalEle({...physicalEle, ele: !physicalEle.ele})
+  }
+
+  const handlePhysicalGoal = (val) => {
+    if (parseInt(val) >= -100 && parseInt(val) <= 100){
+      setPhysicalGoalValid(true);
+      setPhysicalGoal(val);
+    } else {
+      setPhysicalGoalValid(false);
+    }
+  }
+
+  const handleMentalGoal = (val) => {
+    if (parseInt(val) >= -100 && parseInt(val) <= 100){
+      setMentalGoalValid(true);
+      setMentalGoal(val);
+    } else {
+      setMentalGoalValid(false);
+    }
+  }
+
+  const handleSocialGoal = (val) => {
+    if (parseInt(val) >= -100 && parseInt(val) <= 100){
+      setSocialGoalValid(true);
+      setSocialGoal(val);
+    } else {
+      setSocialGoalValid(false);
+    }
   }
 
   return (
@@ -51,72 +103,66 @@ const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
       <Modal.Content>
         <Modal.Description>
           <Header>Physical</Header>
-          <Input 
+          <Input
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'flag checkered',
+              content: 'Goal',
+            }}
+            actionPosition='left'
             placeholder='-100 ~ 100'
             value={physicalGoal}
-            onChange={(e) => setPhysicalGoal(e.target.value)}
+            onChange={(e) => handlePhysicalGoal(e.target.value)}
           />
-          <Form.Checkbox 
-            label='Calories'
-            checked={physicalEle.Calories}
-            onChange={(e) => setPhysicalEle({...physicalEle, Calories: !physicalEle.Calories})}
-          />
-          <Form.Checkbox 
-            label='Pedometer'
-            checked={physicalEle.Pedometer}
-            onChange={(e) => setPhysicalEle({...physicalEle, Pedometer: !physicalEle.Pedometer})}
-          />
+          <div>
+            <Button color={physicalEle.Calories ? 'teal': ''} onClick={() => setPhysicalEle({...physicalEle, Calories: !physicalEle.Calories})}>Calories</Button>
+            <Button color={physicalEle.Pedometer ? 'teal': ''} onClick={() => setPhysicalEle({...physicalEle, Pedometer: !physicalEle.Pedometer})}>Pedometer</Button>
+          </div>
+
           <Header>Mental</Header>
           <Input 
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'flag checkered',
+              content: 'Goal',
+            }}
+            actionPosition='left'
             placeholder='-100 ~ 100'
             value={mentalGoal}
-            onChange={(e) => setMentalGoal(e.target.value)}
+            onChange={(e) => handleMentalGoal(e.target.value)}
           />
-          <Form.Checkbox 
-            label='Valence'
-            checked={mentalEle.Valence}
-            onChange={(e) => setMentalEle({...mentalEle, Valence: !mentalEle.Valence})}
-          />
-          <Form.Checkbox 
-            label='Arousal'
-            checked={mentalEle.Arousal}
-            onChange={(e) => setMentalEle({...mentalEle, Arousal: !mentalEle.Arousal})}
-          />
-          <Form.Checkbox 
-            label='Attention'
-            checked={mentalEle.Attention}
-            onChange={(e) => setMentalEle({...mentalEle, Attention: !mentalEle.Attention})}
-          />
-          <Form.Checkbox 
-            label='Stress'
-            checked={mentalEle.Stress}
-            onChange={(e) => setMentalEle({...mentalEle, Stress: !mentalEle.Stress})}
-          />
+          <div>
+            <Button color={mentalEle.Valence ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Valence: !mentalEle.Valence})}>Valence</Button>
+            <Button color={mentalEle.Arousal ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Arousal: !mentalEle.Arousal})}>Arousal</Button>
+            <Button color={mentalEle.Attention ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Attention: !mentalEle.Attention})}>Attention</Button>
+            <Button color={mentalEle.Stress ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Stress: !mentalEle.Stress})}>Stress</Button>
+          </div>
+
           <Header>Social</Header>
           <Input 
+            action={{
+              color: 'teal',
+              labelPosition: 'left',
+              icon: 'flag checkered',
+              content: 'Goal',
+            }}
+            actionPosition='left'
             placeholder='-100 ~ 100'
             value={socialGoal}
-            onChange={(e) => setSocialGoal(e.target.value)}
+            onChange={(e) => handleSocialGoal(e.target.value)}
           />
-          <Form.Checkbox 
-            label='Call Log'
-            checked={socialEle.CallLog}
-            onChange={(e) => setSocialEle({...socialEle, CallLog: !socialEle.CallLog})}
-          />
-          <Form.Checkbox 
-            label='Message Log'
-            checked={socialEle.MessageLog}
-            onChange={(e) => setSocialEle({...socialEle, MessageLog: !socialEle.MessageLog})}
-          />
-          <Form.Checkbox 
-            label='SNS APP Usage ratio'
-            checked={socialEle.SNSProp}
-            onChange={(e) => setSocialEle({...socialEle, SNSProp: !socialEle.SNSProp})}
-          />
+          <div>
+            <Button color={socialEle.CallLog ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, CallLog: !socialEle.CallLog})}>Call Log</Button>
+            <Button color={socialEle.MessageLog ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, MessageLog: !socialEle.MessageLog})}>Message Log</Button>
+            <Button color={socialEle.SNSProp ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, SNSProp: !socialEle.SNSProp})}>SNS APP Usage Ratio</Button>
+          </div>
+
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color='black' onClick={() => setOpen(false)}>
+        <Button color='black' onClick={handleCancel}>
           Cancel
         </Button>
         <Button
