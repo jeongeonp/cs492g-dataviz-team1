@@ -226,6 +226,10 @@ function Overview({activatedEle, initialGoals}) {
             line: {
                 color: 'gray'
             },
+            hovertemplate:
+                "Value: %{r} <br>" +
+                "Category: %{theta}" +
+                "<extra></extra>"
         },
         {
             type: 'scatterpolar',
@@ -237,6 +241,10 @@ function Overview({activatedEle, initialGoals}) {
             line: {
                 color: '#F88923'
             },
+            hovertemplate:
+                "Value: %{r} <br>" +
+                "Category: %{theta}" +
+                "<extra></extra>"
         },
         {
             type: 'scatterpolar',
@@ -249,6 +257,10 @@ function Overview({activatedEle, initialGoals}) {
             },
             fill: null,
             name: 'Goal',
+            hovertemplate:
+                "Value: %{r} <br>" +
+                "Category: %{theta}" +
+                "<extra></extra>"
         }
       ]
       
@@ -338,7 +350,7 @@ function Overview({activatedEle, initialGoals}) {
                         <span style={{width: '2px'}}></span>
                         <Popup content="This panel is to show the overview of each of the health aspects, which are calculated by taking the average of your weekly data and comparing with others' average to get the z-scores. Afterwards, the z-scores were converted to a scale of -100 to 100 for easier understanding." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                     </h4>
-                        <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
+                        <p className="panel-date">May 2019, Week 1 (April 30th - May 6th)</p>
                         <Plot
                             data={scatterData}
                             layout={scatterLayout}
@@ -351,9 +363,9 @@ function Overview({activatedEle, initialGoals}) {
                             <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
-                            <GoalCard health="Mental" percent="90%" metric={metric['mental']} />
-                            <GoalCard health="Physical" percent="90%" metric={metric['physical']} />
-                            <GoalCard health="Social" percent="90%" metric={metric['social']} />
+                            <GoalCard health="Mental" percent={goals['mental'].toString()} metric={metric['mental']} />
+                            <GoalCard health="Physical" percent={goals['physical'].toString()}metric={metric['physical']} />
+                            <GoalCard health="Social" percent={goals['social'].toString()} metric={metric['social']} />
                         </div>
                     </Grid>
                     <Grid item style={{border: '0px solid black', height: '40%'}}>
