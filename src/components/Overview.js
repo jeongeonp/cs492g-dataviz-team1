@@ -19,9 +19,11 @@ function Overview({activatedEle}) {
     // const [social_metric, changeSocialMetric] = useState([]);
     const [metric, changeMetrics] = useState({mental:[], physical: [], social: []});
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
+    const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
     const [zValues_mental, changeZValuesMental] = useState([]);
     const [zValues_physical, changeZValuesPhysical] = useState([])
     const [zValues_social, changeZValuesSocial] = useState([])
+    const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
     const [text_mental, changeTextMental] = useState("");
     const [text_physical, changeTextPhysical] = useState("");
     const [text_social, changeTextSocial] = useState("");
@@ -154,38 +156,50 @@ function Overview({activatedEle}) {
 
         // Recalculate z-value
         var z_mental_total = 0;
-        mental_temp.map((metric) => {
+        mental_temp.map((item) => {
             // console.log("z_" + metric.toString())
-            const key = "z_" + metric.toString()
+            const key = "z_" + item.toString()
             z_mental_total += mental_data[key]['0']
         })
-        z_mental_total =  z_mental_total / metric['mental'].length;
-        
+        z_mental_total =  z_mental_total / mental_temp.length;
+        console.log("z_mental total: ", z_mental_total);
+
         var z_physical_total = 0;
-        physical_temp.map((metric) => {
+        physical_temp.map((item) => {
             // console.log("z_" + metric.toString())
-            const key = "z_" + metric.toString()
+            const key = "z_" + item.toString()
             z_physical_total += physical_data[key]['0']
         })
-        z_physical_total =  z_physical_total / metric['physical'].length;
+        z_physical_total =  z_physical_total / physical_temp.length;
+        console.log("z_physical total: ", z_physical_total);
 
         var z_social_total = 0;
-        social_temp.map((metric) => {
+        social_temp.map((item) => {
             // console.log("z_" + metric.toString())
-            const key = "z_" + metric.toString().toLowerCase();
+            const key = "z_" + item.toString().toLowerCase();
             z_social_total += social_data[key]['0']
         })
-        z_social_total =  z_social_total / metric['social'].length;
+        z_social_total =  z_social_total / social_temp.length;
+        console.log("z_social total: ", z_social_total);
         changeUserZValue([z_social_total, z_physical_total, z_mental_total]);
-
+        
         // const mental_metric_value = []
         // const physical_metric_value = []
         // const social_metric_value = []
 
         // initializing values
-        metric['mental'].forEach((x, i) => changeMentalMetricValue([...mental_metric_value, mental_values[x]]));
-        metric['physical'].forEach((x, i) => changePhysicalMetricValue([...physical_metric_value, physical_values[x]]));
-        metric['social'].forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
+        // const mental_temp_values = []
+        // const physical_temp_values = []
+        // const social_temp_values = []
+        const mental_temp_values = mental_temp.map(x => mental_values[x]);
+        const physical_temp_values = physical_temp.map(x => physical_values[x]);
+        const social_temp_values = social_temp.map(x => social_values[x]);
+        updateMetricValues(state => ({...state, physical: physical_temp_values, mental: mental_temp_values, social: social_temp_values}))
+
+
+        // mental_temp.forEach((x, i) => changeMentalMetricValue([...mental_metric_value, mental_values[x]]));
+        // physical_temp.forEach((x, i) => changePhysicalMetricValue([...physical_metric_value, physical_values[x]]));
+        // social_temp.forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
 
         // update text
         changeTextMental(zValues_mental.map((zValues_mental, i) => {
@@ -206,6 +220,7 @@ function Overview({activatedEle}) {
     }, [])
 
     console.log("metric: ", metric);
+    console.log("metric_values", metric_values);
     console.log("user_z_value ", user_z_value)
 
     // Polar Chart
@@ -262,7 +277,7 @@ function Overview({activatedEle}) {
     // Bar Data
     const barChartData = [{
         type: 'bar',
-        x: mental_metric_value,
+        x: metric_values['mental'],
         // y: mental_metric,
         y: metric['mental'],
         z: zValues_mental,
