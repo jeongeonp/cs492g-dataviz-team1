@@ -190,17 +190,17 @@ function Overview({activatedEle, initialGoals}) {
         // update text
         const mental_text = zValues_mental.map((zValues_mental, i) => {
         // console.log(zValues_mental, i)
-            return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
+            return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0].toFixed(2)}<br> Other's Value: ${zValues_mental[1].toFixed(2)} `
         })
 
         const physical_text = zValues_physical.map((zValues_physical, i) => {
             // console.log(zValues_mental, i)
-            return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
+            return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0].toFixed(2)}<br> Other's Value: ${zValues_physical[1].toFixed(2)} `
         })
 
         const social_text = zValues_social.map((zValues_social, i) => {
             // console.log(zValues_mental, i)
-            return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
+            return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0].toFixed(2)}<br> Other's Value: ${zValues_social[1].toFixed(2)} `
         })
         changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
 
@@ -342,7 +342,7 @@ function Overview({activatedEle, initialGoals}) {
     return (
         <div>
             <h2>Overview Page</h2>
-            <div className="panels">
+            <div className="panels2">
                 <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
                     <Grid item style={{border: '0px solid black'}}>
                     <h4 className="panel-title">
