@@ -12,38 +12,60 @@ import Plotly from 'plotly.js';
 
 const Plot = createPlotlyComponent(Plotly);
 
-function Overview(props) {
-    console.log("activated ele: ", props.activatedEle);
+function Overview({activatedEle}) {
+    // console.log("activated ele: ", activatedEle);
+    const [physical_metric, changePhysicalMetric] = useState([]);
+    const [mental_metric, changeMentalMetric] = useState([]);
+    const [social_metric, changeSocialMetric] = useState([]);
+    const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
+    const [zValues_mental, changeZValuesMental] = useState([]);
+    const [zValues_physical, changeZValuesPhysical] = useState([])
+    const [zValues_social, changeZValuesSocial] = useState([])
+    const [text_mental, changeTextMental] = useState("");
+    const [text_physical, changeTextPhysical] = useState("");
+    const [text_social, changeTextSocial] = useState("");
+    const [mental_metric_value, changeMentalMetricValue] = useState([]);
+    const [physical_metric_value, changePhysicalMetricValue] = useState([]);
+    const [social_metric_value, changeSocialMetricValue] = useState([]);
+
+    console.log("hellohello");
+    // aggregated data
+    const mental_data = require('../assets/mental_agg_week.json');
+    const physical_data = require('../assets/physical_agg_week.json');
+    const social_data = require('../assets/social_agg_week.json');
 
     // see which elements are visible, metric
-    const physical_metric = []
-    const mental_metric = []
-    const social_metric = []
+    // const physical_metric = []
+    // const mental_metric = []
+    // const social_metric = []
 
-    Object.entries(props.activatedEle).forEach(([key, value]) => {
-        // console.log(props.activatedEle["physical"]);
-        if (key == "physical") {
-            Object.entries(props.activatedEle["physical"]).forEach(([key, value]) => {
-                if (value) {
-                    physical_metric.push(key);
-                }
-            })
-        }
-        else if (key == "mental") {
-            Object.entries(props.activatedEle["mental"]).forEach(([key, value]) => {
-                if (value) {
-                    mental_metric.push(key);
-                }
-            })
-        }
-        else if (key == "social") {
-            Object.entries(props.activatedEle["social"]).forEach(([key, value]) => {
-                if (value) {
-                    social_metric.push(key);
-                }
-            })
-        }
-    });
+    // Object.entries(activatedEle).forEach(([key, value]) => {
+    //     // console.log(props.activatedEle["physical"]);
+    //     if (key == "physical") {
+    //         Object.entries(activatedEle["physical"]).forEach(([key, value]) => {
+    //             if (value) {
+    //                 // physical_metric.push(key);
+    //                 changePhysicalMetric([...physical_metric, key]);
+    //             }
+    //         })
+    //     }
+    //     else if (key == "mental") {
+    //         Object.entries(activatedEle["mental"]).forEach(([key, value]) => {
+    //             if (value) {
+    //                 // mental_metric.push(key);
+    //                 changeMentalMetric([...mental_metric, key]);
+    //             }
+    //         })
+    //     }
+    //     else if (key == "social") {
+    //         Object.entries(activatedEle["social"]).forEach(([key, value]) => {
+    //             if (value) {
+    //                 // social_metric.push(key);
+    //                 changeSocialMetric([...social_metric, key]);
+    //             }
+    //         })
+    //     }
+    // });
 
     // console.log('physical_metrics: ', physical_metric);
     // console.log('physical_metrics: ', mental_metric);
@@ -53,37 +75,32 @@ function Overview(props) {
     const [highlighted, setHighlighted] = useState(null);
     // const scatterPlotRef = useRef();
 
-    // aggregated data
-    const mental_data = require('../assets/mental_agg_week.json');
-    const physical_data = require('../assets/physical_agg_week.json');
-    const social_data = require('../assets/social_agg_week.json');
-
-    // recalculate z-value
-    var z_mental_total = 0;
-    mental_metric.map((metric) => {
-        // console.log("z_" + metric.toString())
-        const key = "z_" + metric.toString()
-        z_mental_total += mental_data[key]['0']
-    })
-    z_mental_total =  z_mental_total / mental_metric.length;
+    // // recalculate z-value
+    // var z_mental_total = 0;
+    // mental_metric.map((metric) => {
+    //     // console.log("z_" + metric.toString())
+    //     const key = "z_" + metric.toString()
+    //     z_mental_total += mental_data[key]['0']
+    // })
+    // z_mental_total =  z_mental_total / mental_metric.length;
     
-    var z_physical_total = 0;
-    physical_metric.map((metric) => {
-        // console.log("z_" + metric.toString())
-        const key = "z_" + metric.toString()
-        z_physical_total += physical_data[key]['0']
-    })
-    z_physical_total =  z_physical_total / physical_metric.length;
+    // var z_physical_total = 0;
+    // physical_metric.map((metric) => {
+    //     // console.log("z_" + metric.toString())
+    //     const key = "z_" + metric.toString()
+    //     z_physical_total += physical_data[key]['0']
+    // })
+    // z_physical_total =  z_physical_total / physical_metric.length;
 
-    var z_social_total = 0;
-    social_metric.map((metric) => {
-        // console.log("z_" + metric.toString())
-        const key = "z_" + metric.toString().toLowerCase();
-        z_social_total += social_data[key]['0']
-    })
-    z_social_total =  z_social_total / social_metric.length;
+    // var z_social_total = 0;
+    // social_metric.map((metric) => {
+    //     // console.log("z_" + metric.toString())
+    //     const key = "z_" + metric.toString().toLowerCase();
+    //     z_social_total += social_data[key]['0']
+    // })
+    // z_social_total =  z_social_total / social_metric.length;
 
-    const user_z_value = [z_social_total, z_physical_total, z_mental_total]
+    // changeUserZValue([z_social_total, z_physical_total, z_mental_total])
 
     // const user_z_value = [social_data["z_social"]['0']*250, physical_data['z_physical']['0']*250, mental_data['z_mental']['0']*250]
     // console.log(user_z_value)
@@ -98,16 +115,15 @@ function Overview(props) {
     const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
     const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
 
-    const mental_metric_value = []
-    const physical_metric_value = []
-    const social_metric_value = []
+    // const mental_metric_value = []
+    // const physical_metric_value = []
+    // const social_metric_value = []
 
-    // initializing values
-    mental_metric.forEach((x, i) => mental_metric_value.push(mental_values[x]));
-    physical_metric.forEach((x, i) => physical_metric_value.push(physical_values[x]));
-    social_metric.forEach((x, i) => social_metric_value.push(social_values[x]));
+    // // initializing values
+    // mental_metric.forEach((x, i) => mental_metric_value.push(mental_values[x]));
+    // physical_metric.forEach((x, i) => physical_metric_value.push(physical_values[x]));
+    // social_metric.forEach((x, i) => social_metric_value.push(social_values[x]));
     // console.log("mental_metric: ", mental_metric_value);
-
 
     // values of each metric
     // const mental_metric_value = [mental_data['z_mental']['0'], mental_data['z_Stress']['0'], mental_data['z_Valence']['0'], mental_data['z_Arousal']['0'], mental_data['z_Attention']['0']]
@@ -135,14 +151,22 @@ function Overview(props) {
         "SNSProp": [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
     }
 
-    const zValues_mental = []
-    const zValues_physical = []
-    const zValues_social = []
+    // Data values
+    const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
+    const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
+    const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
+
+    // const zValues_mental = []
+    // const zValues_physical = []
+    // const zValues_social = []
 
     // initializing values
-    mental_metric.forEach((x, i) => zValues_mental.push(zValues_mental_data[x]));
-    physical_metric.forEach((x, i) => zValues_physical.push(zValues_physical_data[x]));
-    social_metric.forEach((x, i) => zValues_social.push(zValues_social_data[x]));
+    mental_metric.forEach((x, i) => changeZValuesMental([...zValues_mental, zValues_mental_data[x]]));
+    physical_metric.forEach((x, i) => changeZValuesPhysical([...zValues_physical, zValues_physical_data[x]]));
+    social_metric.forEach((x, i) => changeZValuesSocial([...zValues_social, zValues_social_data[x]]));
+
+
+    // social_metric.forEach((x, i) => zValues_social.push(zValues_social_data[x]));
 
     // // [[my, others]]
     // const zValues_mental = [
@@ -169,27 +193,119 @@ function Overview(props) {
     //     [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
     // ]
 
-    var text_mental = zValues_mental.map((zValues_mental, i) => {
+    changeTextMental(zValues_mental.map((zValues_mental, i) => {
         // console.log(zValues_mental, i)
         return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
-    })
+    }))
 
-    var text_physical = zValues_physical.map((zValues_physical, i) => {
+    changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
         // console.log(zValues_mental, i)
         return `<b>${physical_metric[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
-    })
+    }))
 
-    var text_social = zValues_social.map((zValues_social, i) => {
+    changeTextSocial(zValues_social.map((zValues_social, i) => {
         // console.log(zValues_mental, i)
         return `<b>${social_metric[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
-    })
+    }))
 
 
-    const axisConfig = [
-        {label: 'Mental', axisId: "mental", axisValueMax: 200, axisValueMin: 0},
-        {label: 'Social', axisId: "social", axisValueMax: 200, axisValueMin: 0},
-        {label: 'Physical', axisId: "physical", axisValueMax: 200, axisValueMin: 0},
-    ];
+    // const axisConfig = [
+    //     {label: 'Mental', axisId: "mental", axisValueMax: 200, axisValueMin: 0},
+    //     {label: 'Social', axisId: "social", axisValueMax: 200, axisValueMin: 0},
+    //     {label: 'Physical', axisId: "physical", axisValueMax: 200, axisValueMin: 0},
+    // ];
+
+    // edit mode
+    useEffect(() => {
+        // console.log("keeps changing")
+        var physical_temp = [];
+        var social_temp = [];
+        var mental_temp = [];
+        Object.entries(activatedEle).forEach(([key, value]) => {
+            // console.log(props.activatedEle["physical"]);
+            if (key == "physical") {
+                Object.entries(activatedEle["physical"]).forEach(([key, value]) => {
+                    if (value) {
+                        physical_temp.push(key);
+                        // changePhysicalMetric([...physical_metric, key]);
+                    }
+                })
+            }
+            else if (key == "mental") {
+                Object.entries(activatedEle["mental"]).forEach(([key, value]) => {
+                    if (value) {
+                        mental_temp.push(key);
+                        // changeMentalMetric([...mental_metric, key]);
+                    }
+                })
+            }
+            else if (key == "social") {
+                Object.entries(activatedEle["social"]).forEach(([key, value]) => {
+                    if (value) {
+                        social_temp.push(key);
+                        // changeSocialMetric([...social_metric, key]);
+                    }
+                })
+            }
+        });
+
+        // update with the new values
+        // changePhysicalMetric(physical_temp);
+        // changeMentalMetric(mental_temp);
+        // changeSocialMetric(social_temp);
+
+        // Recalculate z-value
+        // var z_mental_total = 0;
+        // mental_metric.map((metric) => {
+        //     // console.log("z_" + metric.toString())
+        //     const key = "z_" + metric.toString()
+        //     z_mental_total += mental_data[key]['0']
+        // })
+        // z_mental_total =  z_mental_total / mental_metric.length;
+        
+        // var z_physical_total = 0;
+        // physical_metric.map((metric) => {
+        //     // console.log("z_" + metric.toString())
+        //     const key = "z_" + metric.toString()
+        //     z_physical_total += physical_data[key]['0']
+        // })
+        // z_physical_total =  z_physical_total / physical_metric.length;
+
+        // var z_social_total = 0;
+        // social_metric.map((metric) => {
+        //     // console.log("z_" + metric.toString())
+        //     const key = "z_" + metric.toString().toLowerCase();
+        //     z_social_total += social_data[key]['0']
+        // })
+        // z_social_total =  z_social_total / social_metric.length;
+        // changeUserZValue([z_social_total, z_physical_total, z_mental_total]);
+
+        // const mental_metric_value = []
+        // const physical_metric_value = []
+        // const social_metric_value = []
+
+        // initializing values
+        // mental_metric.forEach((x, i) => changeMentalMetricValue([...mental_metric_value, mental_values[x]]));
+        // physical_metric.forEach((x, i) => changePhysicalMetricValue([...physical_metric_value, physical_values[x]]));
+        // social_metric.forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
+
+        // update text
+        // changeTextMental(zValues_mental.map((zValues_mental, i) => {
+        // // console.log(zValues_mental, i)
+        //     return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
+        // }))
+
+        // changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
+        //     // console.log(zValues_mental, i)
+        //     return `<b>${physical_metric[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
+        // }))
+
+        // changeTextSocial(zValues_social.map((zValues_social, i) => {
+        //     // console.log(zValues_mental, i)
+        //     return `<b>${social_metric[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
+        // }))
+
+    }, [activatedEle])
 
     // Polar Chart
     const scatterData = [
