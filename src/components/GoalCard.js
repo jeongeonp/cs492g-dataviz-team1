@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { pink } from '@mui/material/colors';
+import { blue } from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Icon } from 'semantic-ui-react'
@@ -21,13 +21,23 @@ export default function BasicCard(props) {
     const percent = props.percent;
     const metric = props.metric.filter(word => word != 'Overall').toString();
     // const metric = props.metric.toString();
+
+    var icon = <Icon  style={{ margin: 0}} name='heart' />
+    if (health == "Physical") {
+        icon = <Icon style={{ margin: 0}} name='bicycle' />
+    }
+    else if (health === 'Social') {
+        icon = <Icon  style={{ margin: 0}} name='user' />
+    }
+
     return (
         <Card style={{ marginTop: '0.5em', marginBottom: '0.5em'}} sx={{ minWidth: 250 }} variant="outlined">
             <CardContent>
                 <Box sx={{ display: 'flex' }}>
                     <Box sx={{ flexShrink: 1, paddingRight: '1em' }}>
-                        <Avatar sx={{ bgcolor: pink[500] }}>
-                            <Icon name='heart' />
+                        <Avatar sx={{ bgcolor: blue[500] }}>
+                            { icon }
+                            {/* <Icon name='heart' /> */}
                         </Avatar>
                     </Box>
                     <Box sx={{ flexShrink: 3 }}>
