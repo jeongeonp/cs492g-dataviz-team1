@@ -17,9 +17,7 @@ import createPlotlyComponent from "react-plotly.js/factory";
 const Plot = createPlotlyComponent(Plotly);
 
 
-console.log(social)
-
-var total = {}
+//console.log(social)
 
 //var mental_total = mental_p3012
 //mental_total['Total'] = total
@@ -40,7 +38,7 @@ var dates = {
 }
 
 function Trend({activatedEle}) {
-    console.log(activatedEle)
+    //console.log(activatedEle)
     const [myData, setMyData] = useState(dates)
     const [othersData, setOthersData] = useState(dates)
 
@@ -52,8 +50,9 @@ function Trend({activatedEle}) {
     // move to hook later
     const [numMetric, setNumMetric] = useState({physical: ['Calories', 'Pedometer'], mental: ['Valence', 'Arousal', 'Attention', 'Stress'], social: ['CallLog', 'MessageLog', 'SNSProp']})
 
-    const unitMap = {Calories: 'kcal', Pedometer: '', Valence: '', Arousal: '', Attention: '', Stress: '', CallLog: '', MessageLog: '', SNSProp: ''}
-    const titleMap = {Calories: 'Calories'}
+    const titleMap = {Calories: 'Calories', Pedometer: 'Pedometer', Valence: 'Valence', Arousal: 'Arousal', Attention: 'Attention', Stress: 'Stress', CallLog: 'Call Log', MessageLog: 'Message Log', SNSProp: 'SNS App Usage Ratio'}
+    const titleUnitMap = {Calories: 'Calories (kcal)', Pedometer: 'Pedometer (steps walked)', Valence: 'Valence', Arousal: 'Arousal', Attention: 'Attention', Stress: 'Stress', CallLog: 'Call Log (mins)', MessageLog: 'Message Log (# of messages)', SNSProp: 'SNS App Usage Ratio (%)'}
+    const unitMap = {Calories: 'kcal', Pedometer: 'Steps Walked', Valence: 'Score', Arousal: 'Score', Attention: 'Score', Stress: 'Score', CallLog: 'Minutes', MessageLog: '# of Messages', SNSProp: '% of SNS App Usage'}
 
     // Vertical / horizontal mode
     const [mode, setMode] = useState('horizontal')
@@ -73,10 +72,32 @@ function Trend({activatedEle}) {
         }
     }
 
+    // Editing with edit mode
+    useEffect(() => {
+        console.log(activatedEle)
+        const newPhysical = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v]) // ['caloreis', 'pedometer']
+        const newMental = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
+        const newSocial = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
+
+        setNumMetric({physical: newPhysical, mental: newMental, social: newSocial})
+
+        //console.log(myData, othersData)
+
+        //console.log(physical)
+        //console.log(mental)
+        //console.log(social)
+
+        changeAspect(selectedAspect)
+        console.log("CURRENTLY SELECTED ELEMENT", selectedAspect)
+
+    }, [activatedEle])
+
+
+    // Selecting with new elements
     useEffect(() => {
         const newMultiple = {physical: {}, mental: {}, social: {}}
         const newOthersMultiple = {physical: {}, mental: {}, social: {}}
-        console.log(numMetric[selectedAspect])
+        //console.log(numMetric[selectedAspect])
 
         for (var i in numMetric['physical']) {
             newMultiple['physical'][numMetric['physical'][i]] = {x: dates.x, y: Object.values(physical['p3012_'+numMetric['physical'][i]])}
@@ -99,7 +120,7 @@ function Trend({activatedEle}) {
         setMultipleOthers(newOthersMultiple)
 
 
-        console.log('selectedAspect changed')
+        //console.log('selectedAspect changed')
         changeAspect(selectedAspect)
     }, [selectedAspect])
 
@@ -109,29 +130,69 @@ function Trend({activatedEle}) {
 
     const changeAspect = (e) => {
         if (e === 'physical') {
-            console.log(physical)
-            const newPhysical = {x: dates.x, y: Object.values(physical.z_physical)}
+            //const newPhysical = {x: dates.x, y: Object.values(physical.z_physical)}
             const newOthersPhysical = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+
+            const newPhysicalElements = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v])
+            var physical_plot = []
+            var physical_final_plot = [0, 0, 0, 0, 0, 0, 0]
+            for (var i in newPhysicalElements) {
+                physical_plot.push(Object.values(physical['z_'+newPhysicalElements[i]]))
+            }
+            var physical_numelements = newPhysicalElements.length
+            for (var j in physical_plot) {
+                for (var k in physical_plot[j]) {
+                    physical_final_plot[k] += physical_plot[j][k]
+                }
+            }
+
+            const newPhysical = {x: dates.x, y: physical_final_plot.map(v => v/physical_numelements)}
 
             setMyData(newPhysical)
             setOthersData(newOthersPhysical)
-
-            //console.log(e+ ' change done!')
         }
         
         if (e === 'mental') {
-            const newMental = {x: dates.x, y: Object.values(mental.z_mental)}
+            //const newMental = {x: dates.x, y: Object.values(mental.z_mental)}
             const newOthersMental = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+
+            const newMentalElements = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
+            var mental_plot = []
+            var mental_final_plot = [0, 0, 0, 0, 0, 0, 0]
+            for (var i in newMentalElements) {
+                mental_plot.push(Object.values(mental['z_'+newMentalElements[i]]))
+            }
+            var mental_numelements = newMentalElements.length
+            for (var j in mental_plot) {
+                for (var k in mental_plot[j]) {
+                    mental_final_plot[k] += mental_plot[j][k]
+                }
+            }
+
+            const newMental = {x: dates.x, y: mental_final_plot.map(v => v/mental_numelements)}
 
             setMyData(newMental)
             setOthersData(newOthersMental)
-
-            //console.log(e+' change done!')
         }
 
         if (e === 'social') {
-            const newSocial = {x: dates.x, y: Object.values(social.z_social)}
+            //const newSocial = {x: dates.x, y: Object.values(social.z_social)}
             const newOthersSocial = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+
+            const newSocialElements = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
+            var social_plot = []
+            var social_final_plot = [0, 0, 0, 0, 0, 0, 0]
+            for (var i in newSocialElements) {
+                social_plot.push(Object.values(social['z_'+newSocialElements[i].toLowerCase()]))
+            }
+            var social_numelements = newSocialElements.length
+            for (var j in social_plot) {
+                for (var k in social_plot[j]) {
+                    social_final_plot[k] += social_plot[j][k]
+                }
+            }
+
+            const newSocial = {x: dates.x, y: social_final_plot.map(v => v/social_numelements)}
 
             setMyData(newSocial)
             setOthersData(newOthersSocial)
@@ -178,7 +239,7 @@ function Trend({activatedEle}) {
                         layout={{
                             width: 1000, 
                             height: 500, 
-                            title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", 
+                            title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health [" + numMetric[selectedAspect].map(v => titleMap[v]) + "]", 
                             yaxis: {range: [-4, 4], title: 'z-score'}
                         }}
                     />
@@ -222,7 +283,12 @@ function Trend({activatedEle}) {
                                 name: "Other Users",
                             },
                             ]}
-                            layout={{width: width, height: height, title: e}}
+                            layout={{
+                                width: width, 
+                                height: height, 
+                                title: titleUnitMap[e],
+                                yaxis: {title: unitMap[e]}
+                            }}
                         />
                         : <div>No data to show!</div>
                     ))
