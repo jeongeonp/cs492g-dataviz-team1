@@ -24,7 +24,48 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
   const [socialEleValid, setSocialEleValid] = useState(true);
 
   const handleDone = () => {
-    var check = physicalEleValid && mentalGoalValid && socialGoalValid && physicalEleValid && mentalEleValid && socialEleValid;
+
+    var physical_goal_valid = false
+    var mental_goal_valid = false
+    var social_goal_valid = false
+
+    var physical_ele_valid = false
+    var mental_ele_valid = false
+    var social_ele_valid = false
+
+    if (parseInt(physicalGoal) >= -100 && parseInt(physicalGoal) <= 100){
+      physical_goal_valid = true
+    } 
+
+    if (parseInt(mentalGoal) >= -100 && parseInt(mentalGoal) <= 100){
+      mental_goal_valid = true
+    }
+
+    if (parseInt(socialGoal) >= -100 && parseInt(socialGoal) <= 100){
+      social_goal_valid = true
+    }
+
+    if (physicalEle.Calories || physicalEle.Pedometer) {
+      physical_ele_valid = true
+    }
+
+    if (mentalEle.Valence || mentalEle.Arousal || mentalEle.Attention || mentalEle.Stress) {
+      mental_ele_valid = true
+    }
+
+    if (socialEle.CallLog || socialEle.MessageLog || socialEle.SNSProp) {
+      social_ele_valid = true
+    }
+
+    setPhysicalGoalValid(physical_goal_valid);
+    setMentalGoalValid(mental_goal_valid);
+    setSocialGoalValid(social_goal_valid);
+
+    setPhysicalEleValid(physical_ele_valid)
+    setMentalEleValid(mental_ele_valid)
+    setSocialEleValid(social_ele_valid)
+
+    var check = physical_goal_valid && mental_goal_valid && social_goal_valid && physical_ele_valid && mental_ele_valid && social_ele_valid;
 
     var updatedGoal = {
       physical: parseInt(physicalGoal), 
@@ -62,32 +103,32 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
     setPhysicalEle({...physicalEle, ele: !physicalEle.ele})
   }
 
-  const handlePhysicalGoal = (val) => {
-    if (parseInt(val) >= -100 && parseInt(val) <= 100){
-      setPhysicalGoalValid(true);
-      setPhysicalGoal(val);
-    } else {
-      setPhysicalGoalValid(false);
-    }
-  }
+  // const handlePhysicalGoal = (val) => {
+  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
+  //     setPhysicalGoalValid(true);
+  //     setPhysicalGoal(val);
+  //   } else {
+  //     setPhysicalGoalValid(false);
+  //   }
+  // }
 
-  const handleMentalGoal = (val) => {
-    if (parseInt(val) >= -100 && parseInt(val) <= 100){
-      setMentalGoalValid(true);
-      setMentalGoal(val);
-    } else {
-      setMentalGoalValid(false);
-    }
-  }
+  // const handleMentalGoal = (val) => {
+  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
+  //     setMentalGoalValid(true);
+  //     setMentalGoal(val);
+  //   } else {
+  //     setMentalGoalValid(false);
+  //   }
+  // }
 
-  const handleSocialGoal = (val) => {
-    if (parseInt(val) >= -100 && parseInt(val) <= 100){
-      setSocialGoalValid(true);
-      setSocialGoal(val);
-    } else {
-      setSocialGoalValid(false);
-    }
-  }
+  // const handleSocialGoal = (val) => {
+  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
+  //     setSocialGoalValid(true);
+  //     setSocialGoal(val);
+  //   } else {
+  //     setSocialGoalValid(false);
+  //   }
+  // }
 
   return (
     <Modal
@@ -98,12 +139,31 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
     >
       <Modal.Header>
         Edit Mode
-        <Popup content='original goal is set to 0' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+        <Popup content='original goal is set to 0' trigger={<Icon disabled name='help circle' />} size='tiny'/>
       </Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Physical</Header>
+
+          <div>
+            <Form.Checkbox
+              style={{marginBottom: '10px'}}
+              color={physicalEle.Calories ? 'teal': ''} 
+              onClick={() => setPhysicalEle({...physicalEle, Calories: !physicalEle.Calories})} 
+              label='Calories' 
+              checked={physicalEle.Calories} 
+            />
+            <Form.Checkbox 
+              color={physicalEle.Pedometer ? 'teal': ''} 
+              onClick={() => setPhysicalEle({...physicalEle, Pedometer: !physicalEle.Pedometer})} 
+              label='Pedometer' 
+              checked={physicalEle.Pedometer} 
+            />
+            <br/>
+            {!physicalEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
+          </div>
           <Input
+            style={{width: '100px', marginTop: '10px'}} 
             action={{
               color: 'teal',
               labelPosition: 'left',
@@ -113,15 +173,46 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             actionPosition='left'
             placeholder='-100 ~ 100'
             value={physicalGoal}
-            onChange={(e) => handlePhysicalGoal(e.target.value)}
+            onChange={(e) => setPhysicalGoal(e.target.value)}
           />
-          <div>
-            <Button color={physicalEle.Calories ? 'teal': ''} onClick={() => setPhysicalEle({...physicalEle, Calories: !physicalEle.Calories})}>Calories</Button>
-            <Button color={physicalEle.Pedometer ? 'teal': ''} onClick={() => setPhysicalEle({...physicalEle, Pedometer: !physicalEle.Pedometer})}>Pedometer</Button>
-          </div>
+          <br/>
+          {!physicalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
 
           <Header>Mental</Header>
+
+          <div>
+            <Form.Checkbox 
+              style={{marginBottom: '10px'}}
+              color={mentalEle.Valence ? 'teal': ''} 
+              onClick={() => setMentalEle({...mentalEle, Valence: !mentalEle.Valence})} 
+              label='Valence'
+              checked={mentalEle.Valence} 
+            />
+            <Form.Checkbox 
+              style={{marginBottom: '10px'}}
+              color={mentalEle.Arousal ? 'teal': ''} 
+              onClick={() => setMentalEle({...mentalEle, Arousal: !mentalEle.Arousal})} 
+              label='Arousal' 
+              checked={mentalEle.Arousal}
+            />
+            <Form.Checkbox
+              style={{marginBottom: '10px'}} 
+              color={mentalEle.Attention ? 'teal': ''} 
+              onClick={() => setMentalEle({...mentalEle, Attention: !mentalEle.Attention})} 
+              label='Attention' 
+              checked={mentalEle.Attention}
+            />
+            <Form.Checkbox 
+              color={mentalEle.Stress ? 'teal': ''} 
+              onClick={() => setMentalEle({...mentalEle, Stress: !mentalEle.Stress})} 
+              label='Stress' 
+              checked={mentalEle.Stress}
+            />
+            <br/>
+            {!mentalEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
+          </div>
           <Input 
+            style={{width: '100px', marginTop: '10px'}}  
             action={{
               color: 'teal',
               labelPosition: 'left',
@@ -131,17 +222,39 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             actionPosition='left'
             placeholder='-100 ~ 100'
             value={mentalGoal}
-            onChange={(e) => handleMentalGoal(e.target.value)}
+            onChange={(e) => setMentalGoal(e.target.value)}
           />
-          <div>
-            <Button color={mentalEle.Valence ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Valence: !mentalEle.Valence})}>Valence</Button>
-            <Button color={mentalEle.Arousal ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Arousal: !mentalEle.Arousal})}>Arousal</Button>
-            <Button color={mentalEle.Attention ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Attention: !mentalEle.Attention})}>Attention</Button>
-            <Button color={mentalEle.Stress ? 'teal': ''} onClick={(e) => setMentalEle({...mentalEle, Stress: !mentalEle.Stress})}>Stress</Button>
-          </div>
+          <br/>
+          {!mentalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
 
           <Header>Social</Header>
+
+          <div>
+            <Form.Checkbox 
+              style={{marginBottom: '10px'}}
+              color={socialEle.CallLog ? 'teal': ''} 
+              onClick={() => setSocialEle({...socialEle, CallLog: !socialEle.CallLog})} 
+              label='Call Log' 
+              checked={socialEle.CallLog}
+            />
+            <Form.Checkbox 
+              style={{marginBottom: '10px'}}
+              color={socialEle.MessageLog ? 'teal': ''} 
+              onClick={() => setSocialEle({...socialEle, MessageLog: !socialEle.MessageLog})} 
+              label='Message Log' 
+              checked={socialEle.MessageLog}
+            />
+            <Form.Checkbox 
+              color={socialEle.SNSProp ? 'teal': ''} 
+              onClick={() => setSocialEle({...socialEle, SNSProp: !socialEle.SNSProp})} 
+              label='SNS APP Usage Ratio' 
+              checked={socialEle.SNSProp}
+            />
+            <br/>
+            {!socialEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
+          </div>
           <Input 
+            style={{width: '100px', marginTop: '10px'}} 
             action={{
               color: 'teal',
               labelPosition: 'left',
@@ -151,13 +264,10 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             actionPosition='left'
             placeholder='-100 ~ 100'
             value={socialGoal}
-            onChange={(e) => handleSocialGoal(e.target.value)}
+            onChange={(e) => setSocialGoal(e.target.value)}
           />
-          <div>
-            <Button color={socialEle.CallLog ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, CallLog: !socialEle.CallLog})}>Call Log</Button>
-            <Button color={socialEle.MessageLog ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, MessageLog: !socialEle.MessageLog})}>Message Log</Button>
-            <Button color={socialEle.SNSProp ? 'teal': ''} onClick={(e) => setMentalEle({...socialEle, SNSProp: !socialEle.SNSProp})}>SNS APP Usage Ratio</Button>
-          </div>
+          <br/>
+          {!socialGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
 
         </Modal.Description>
       </Modal.Content>
