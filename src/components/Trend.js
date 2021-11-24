@@ -51,6 +51,8 @@ function Trend() {
     // move to hook later
     const [numMetric, setNumMetric] = useState({physical: ['Calories', 'Pedometer'], mental: ['Valence', 'Arousal', 'Attention', 'Stress'], social: ['CallLog', 'MessageLog', 'SNSProp']})
 
+    const unitMap = {Calories: 'kcal', Pedometer: '', Valence: '', Arousal: '', Attention: '', Stress: '', CallLog: '', MessageLog: '', SNSProp: ''}
+    const titleMap = {Calories: 'Calories'}
 
     // Vertical / horizontal mode
     const [mode, setMode] = useState('horizontal')
@@ -65,7 +67,7 @@ function Trend() {
             setHeight(300)
         }
         if (mode === 'vertical') {
-            setWidth(800)
+            setWidth(1000)
             setHeight(500)
         }
     }
@@ -173,7 +175,7 @@ function Trend() {
                         },
                         ]}
                         layout={{
-                            width: 1200, 
+                            width: 1000, 
                             height: 500, 
                             title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", 
                             yaxis: {range: [-4, 4], title: 'z-score'}

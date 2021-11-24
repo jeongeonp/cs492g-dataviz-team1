@@ -103,14 +103,18 @@ function Activities() {
                         labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 2.4 ] ] }}
                         borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.3 ] ] }}
                         animate={true}
-                        tooltip={({id, value, p3012, others}) => (
+                        tooltip={(input) => {
+                            console.log(input)
+                            return(
                             <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '1px' }}>
-                                {p3012}: <b>{others}</b>
+                                {input.data.p3012}: <b>{input.data.others}</b>
                             </div>
-                        )}
+                            )
+                        }}
                     />
                 </div>
                 <div className="badBubble">
+                    {/*
                     <ResponsiveCirclePackingCanvas
                         data={bad_data}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
@@ -129,7 +133,7 @@ function Activities() {
                             </div>
                         )}
                     />
-                    
+                        */}
                 </div>
             </div>
             <div className="bubbleInfo">
