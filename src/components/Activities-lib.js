@@ -24,7 +24,7 @@ function Activities({activatedEle}) {
 
     // Editmode
     useEffect(() => {
-        console.log(activatedEle)
+        //console.log(activatedEle)
         const newPhysical = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v]) // ['calories', 'pedometer']
         const newMental = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
         const newSocial = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
@@ -47,7 +47,7 @@ function Activities({activatedEle}) {
         const newSocial_false = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v] === false)
         
         const false_elem = newPhysical_false.concat(newMental_false, newSocial_false)
-        console.log(false_elem)
+        //console.log(false_elem)
         //console.log(json)
         for (var i in false_elem) {
             delete json['others'][false_elem[i]]
@@ -69,7 +69,7 @@ function Activities({activatedEle}) {
     const changeZscore = () => {
         const sort_zscore = Object.values(json.z_score).map(v => Math.abs(v))
         sort_zscore.sort(function(a, b){return b-a})
-        console.log("NEw ZSCORE", sort_zscore)
+        //console.log("NEw ZSCORE", sort_zscore)
         setOrderedScores(sort_zscore)
     }
 
