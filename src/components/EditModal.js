@@ -135,7 +135,7 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
-      trigger={<Button>Edit Mode</Button>}
+      trigger={<Button size="tiny"  color='blue'>Edit Mode <Icon style={{margin: '0px', padding: '0px'}} name="edit outline"/></Button>}
     >
       <Modal.Header>
         Edit Mode

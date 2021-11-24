@@ -16,7 +16,7 @@ function HelpModal() {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button basic labelPosition='right'>Website Guide <Icon style={{marginLeft: '3px'}} name='help circle' /></Button>}
+            trigger={<Button size="tiny" basic color='blue'>Help Guide <Icon style={{margin: '0px', padding: '0px'}} name="lightbulb outline"/></Button>}
         >
         <Modal.Header>Welcome!</Modal.Header>
         <Modal.Content>

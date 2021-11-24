@@ -53,20 +53,18 @@ function App() {
     <div >
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19)', padding: '0 15px'}}>
-          <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
+          <Grid container alignItems="center" justifyContent="space-between" spacing={2} >
             <Grid item xs='auto'>
               <h3>CS492(G) Team 1</h3>
             </Grid> 
+            <Grid item xs='auto'>
+              <HelpModal />
               <EditModal 
                 activatedEle = {activatedEle}
                 changeEle = {setActivatedEle}
                 goals = {goals}
                 changeGoals = {setGoals}
               />
-            <Grid>
-            </Grid> 
-              <HelpModal />
-            <Grid>
             </Grid>
             <Grid item xs='auto'>
             <TabList onChange={handleChange} aria-label="lab API tabs example" style={{}}>
