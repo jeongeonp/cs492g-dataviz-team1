@@ -173,7 +173,7 @@ function Trend() {
                         },
                         ]}
                         layout={{
-                            width: 800, 
+                            width: 1200, 
                             height: 500, 
                             title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health", 
                             yaxis: {range: [-4, 4], title: 'z-score'}

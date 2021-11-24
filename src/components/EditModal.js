@@ -5,6 +5,7 @@ import 'semantic-ui-css/semantic.min.css'
 
 
 function EditModal() {
+  // const [goals, setGoals] = useState[{'physical': 0, 'mental': 0, 'social': 0}]
   const [open, setOpen] = useState(false);
 
   return (

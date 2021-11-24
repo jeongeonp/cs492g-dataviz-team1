@@ -5,34 +5,30 @@ import 'semantic-ui-css/semantic.min.css'
 
 
 function HelpModal() {
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
-  return (
-    <Modal
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
-      trigger={<Button icon='help circle'/>}
-    >
-      <Modal.Header>HELP</Modal.Header>
-      <Modal.Content>
-        <Modal.Description>
-          <Header>OVERVIEW</Header>
-          <Header>TREND</Header>
-          <Header>ACTIVITY</Header>
-        </Modal.Description>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
-          content="Check"
-          labelPosition='right'
-          icon='checkmark'
-          onClick={() => setOpen(false)}
-          positive
-        />
-      </Modal.Actions>
-    </Modal>
-  );
+    return (
+        <Modal
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        open={open}
+        trigger={<Button icon='help circle'/>}
+        >
+        <Modal.Header>HELP</Modal.Header>
+        <Modal.Content>
+            <Modal.Description>
+            <Header>OVERVIEW</Header>
+            <Header>TREND</Header>
+            <Header>ACTIVITY</Header>
+            </Modal.Description>
+        </Modal.Content>
+        <Modal.Actions>
+            <Button color='green' onClick={() => setOpen(false)}>
+            Check
+            </Button>
+        </Modal.Actions>
+        </Modal>
+    );
 }
 
 export default HelpModal;

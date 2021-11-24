@@ -1,5 +1,4 @@
-import logo from './logo.svg';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
 import './App.css';
 import Overview from './components/Overview';
@@ -15,9 +14,33 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import 'semantic-ui-css/semantic.min.css'
 
+function reducer(state, action) {
+  return state;
+}
+
+
+const initialActivatedElements = {
+  physical: {
+    calories: true,
+    pedometer: true,
+  },
+  mental: {
+    valence: true,
+    arousal: true,
+    attention: true,
+    stress: true,
+  }, 
+  social: {
+    calllog: true,
+    messagelog: true,
+    snsprop: true,
+  }
+}
+
 
 
 function App() {
+  const [activatedElements, setActivatedElements] = useReducer(reducer, initialActivatedElements);
   const [value, setValue] = useState('1');
 
   const handleChange = (event, newValue) => {
