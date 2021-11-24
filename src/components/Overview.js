@@ -152,9 +152,9 @@ function Overview({activatedEle}) {
     }
 
     // Data values
-    const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
-    const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
-    const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
+    // const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
+    // const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
+    // const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
 
     // const zValues_mental = []
     // const zValues_physical = []
@@ -193,20 +193,20 @@ function Overview({activatedEle}) {
     //     [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
     // ]
 
-    changeTextMental(zValues_mental.map((zValues_mental, i) => {
-        // console.log(zValues_mental, i)
-        return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
-    }))
+    // changeTextMental(zValues_mental.map((zValues_mental, i) => {
+    //     // console.log(zValues_mental, i)
+    //     return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
+    // }))
 
-    changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
-        // console.log(zValues_mental, i)
-        return `<b>${physical_metric[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
-    }))
+    // changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
+    //     // console.log(zValues_mental, i)
+    //     return `<b>${physical_metric[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
+    // }))
 
-    changeTextSocial(zValues_social.map((zValues_social, i) => {
-        // console.log(zValues_mental, i)
-        return `<b>${social_metric[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
-    }))
+    // changeTextSocial(zValues_social.map((zValues_social, i) => {
+    //     // console.log(zValues_mental, i)
+    //     return `<b>${social_metric[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
+    // }))
 
 
     // const axisConfig = [

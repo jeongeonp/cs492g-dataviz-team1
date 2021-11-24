@@ -186,12 +186,16 @@ svg {
 .controlBar {
     width: 10%;
     height: 450px;
+    padding: 30px 0;
     background-color: #c3dcf0;
     border-radius: 5px;
     display: inline-block;
-        padding: 10px;
     box-sizing: border-box;
     vertical-align: top;
+}
+.controlBlock {
+    height: 350px;
+    text-align: center;
 }
 
 .bubbleSvg {

@@ -98,37 +98,9 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
     setOpen(false);
   };
 
-  const handlePhysicalEleChange = (ele) => {
+  const question_context =
+  'Initial value for the goal is set to 0. You can change this value between -100 to 100. But as this score is based on the z score, we highly recommend to set the value between -25 to 25. You can add or remove each elements for tracking with checkbox. Make sure at least 1 element should be contained in each aspect.'
 
-    setPhysicalEle({...physicalEle, ele: !physicalEle.ele})
-  }
-
-  // const handlePhysicalGoal = (val) => {
-  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
-  //     setPhysicalGoalValid(true);
-  //     setPhysicalGoal(val);
-  //   } else {
-  //     setPhysicalGoalValid(false);
-  //   }
-  // }
-
-  // const handleMentalGoal = (val) => {
-  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
-  //     setMentalGoalValid(true);
-  //     setMentalGoal(val);
-  //   } else {
-  //     setMentalGoalValid(false);
-  //   }
-  // }
-
-  // const handleSocialGoal = (val) => {
-  //   if (parseInt(val) >= -100 && parseInt(val) <= 100){
-  //     setSocialGoalValid(true);
-  //     setSocialGoal(val);
-  //   } else {
-  //     setSocialGoalValid(false);
-  //   }
-  // }
 
   return (
     <Modal
@@ -139,7 +111,7 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
     >
       <Modal.Header>
         Edit Mode
-        <Popup content='original goal is set to 0' trigger={<Icon disabled name='help circle' />} size='tiny'/>
+        <Popup content={question_context} trigger={<Icon disabled name='help circle' />} size='tiny'/>
       </Modal.Header>
       <Modal.Content>
         <Modal.Description>
