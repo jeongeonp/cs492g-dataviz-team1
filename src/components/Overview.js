@@ -26,7 +26,7 @@ function Overview({activatedEle}) {
 
     // Const over here
     const [highlighted, setHighlighted] = useState(null);
-    
+
     // data values
     const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
     const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
@@ -111,6 +111,11 @@ function Overview({activatedEle}) {
             }
         });
 
+        // Add overall
+        social_temp.push('Overall');
+        mental_temp.push('Overall');
+        physical_temp.push('Overall');
+
         changeMetrics(state => ({...state, physical: physical_temp, mental: mental_temp, social: social_temp}))
 
         console.log("social_temp", social_temp);
@@ -128,27 +133,33 @@ function Overview({activatedEle}) {
         // Recalculate z-value
         var z_mental_total = 0;
         mental_temp.map((item) => {
-            // console.log("z_" + metric.toString())
-            const key = "z_" + item.toString()
-            z_mental_total += mental_data[key]['0']
+            if (item != "Overall") {
+                // console.log("z_" + metric.toString())
+                const key = "z_" + item.toString()
+                z_mental_total += mental_data[key]['0']
+            }
         })
         z_mental_total =  z_mental_total / mental_temp.length;
         console.log("z_mental total: ", z_mental_total);
 
         var z_physical_total = 0;
         physical_temp.map((item) => {
-            // console.log("z_" + metric.toString())
-            const key = "z_" + item.toString()
-            z_physical_total += physical_data[key]['0']
+            if (item != "Overall") {
+                // console.log("z_" + metric.toString())
+                const key = "z_" + item.toString()
+                z_physical_total += physical_data[key]['0']
+            }
         })
         z_physical_total =  z_physical_total / physical_temp.length;
         console.log("z_physical total: ", z_physical_total);
 
         var z_social_total = 0;
         social_temp.map((item) => {
-            // console.log("z_" + metric.toString())
-            const key = "z_" + item.toString().toLowerCase();
-            z_social_total += social_data[key]['0']
+            if (item != "Overall") {
+                // console.log("z_" + metric.toString())
+                const key = "z_" + item.toString().toLowerCase();
+                z_social_total += social_data[key]['0']
+            }
         })
         z_social_total =  z_social_total / social_temp.length;
         console.log("z_social total: ", z_social_total);
