@@ -207,7 +207,7 @@ function Trend({activatedEle}) {
                 <h4 className="panel-title">
                     <span>Overall Trend </span>
                     <span style={{width: '2px'}}></span>
-                    <Popup content='Add users to your feed' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    <Popup content='This ..' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
 
                 </h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
@@ -249,7 +249,7 @@ function Trend({activatedEle}) {
                 <h4 className="panel-title">
                     <span>Detailed trends for each metric </span>
                     <span style={{width: '2px'}}></span>
-                    <Popup content='Add users to your feed' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    <Popup content='This ..' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                 </h4> 
                 <Button.Group style={{marginTop: '10px'}} size='tiny'>
                     <Button color={mode === 'horizontal'? 'twitter': ''} icon onClick={() => changeMode('horizontal')}>
