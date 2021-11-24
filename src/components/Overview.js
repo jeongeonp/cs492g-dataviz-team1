@@ -13,25 +13,12 @@ import Plotly from 'plotly.js';
 const Plot = createPlotlyComponent(Plotly);
 
 function Overview({activatedEle}) {
-    // console.log("activated ele: ", activatedEle);
-    // const [physical_metric, changePhysicalMetric] = useState([]);
-    // const [mental_metric, changeMentalMetric] = useState([]);
-    // const [social_metric, changeSocialMetric] = useState([]);
+
     const [metric, changeMetrics] = useState({mental:[], physical: [], social: []});
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
     const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
-    const [zValues_mental, changeZValuesMental] = useState([]);
-    const [zValues_physical, changeZValuesPhysical] = useState([])
-    const [zValues_social, changeZValuesSocial] = useState([])
     const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
-    const [text_mental, changeTextMental] = useState("");
-    const [text_physical, changeTextPhysical] = useState("");
-    const [text_social, changeTextSocial] = useState("");
-    const [mental_metric_value, changeMentalMetricValue] = useState([]);
-    const [physical_metric_value, changePhysicalMetricValue] = useState([]);
-    const [social_metric_value, changeSocialMetricValue] = useState([]);
 
-    // console.log("hellohello");
     // aggregated data
     const mental_data = require('../assets/mental_agg_week.json');
     const physical_data = require('../assets/physical_agg_week.json');
@@ -39,7 +26,7 @@ function Overview({activatedEle}) {
 
     // Const over here
     const [highlighted, setHighlighted] = useState(null);
-    // const scatterPlotRef = useRef();
+    
     // data values
     const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
     const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
@@ -67,44 +54,28 @@ function Overview({activatedEle}) {
         "SNSProp": [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
     }
 
-    // Data values
-    // const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
-    // const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
-    // const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
+    const zValues_mental = [
+        [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
+        [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
+        [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
+        [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
+        [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']]
+    ]
 
-    // const zValues_mental = []
-    // const zValues_physical = []
-    // const zValues_social = []
+    const zValues_physical = [
+        [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
+        [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
+        [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']],
+    ]
 
-    // initializing values
-    // metric['mental'].forEach((x, i) => changeZValuesMental([...zValues_mental, zValues_mental_data[x]]));
-    // metric['physical'].forEach((x, i) => changeZValuesPhysical([...zValues_physical, zValues_physical_data[x]]));
-    // metric['social'].forEach((x, i) => changeZValuesSocial([...zValues_social, zValues_social_data[x]]));
-
-
-    // social_metric.forEach((x, i) => zValues_social.push(zValues_social_data[x]));
-
-    // const mental_tooltip = zValues_mental.map((zValues_mental, i) => {
-    //     // console.log(zValues_mental, i)
-    //     return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
-    // })
-
-    // changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
-    //     // console.log(zValues_mental, i)
-    //     return `<b>${physical_metric[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
-    // }))
-
-    // changeTextSocial(zValues_social.map((zValues_social, i) => {
-    //     // console.log(zValues_mental, i)
-    //     return `<b>${social_metric[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
-    // }))
-
-
-    // const axisConfig = [
-    //     {label: 'Mental', axisId: "mental", axisValueMax: 200, axisValueMin: 0},
-    //     {label: 'Social', axisId: "social", axisValueMax: 200, axisValueMin: 0},
-    //     {label: 'Physical', axisId: "physical", axisValueMax: 200, axisValueMin: 0},
-    // ];
+    const zValues_social = [
+        [social_data['z_social']['0'], social_data['z_social']['0']], 
+        [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
+        [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
+        [social_data['p3012_phonelog']['0'], social_data['others_phonelog']['0']],
+        [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
+        [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
+    ]
 
     // edit mode
     useEffect(() => {
@@ -202,26 +173,28 @@ function Overview({activatedEle}) {
         // social_temp.forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
 
         // update text
-        changeTextMental(zValues_mental.map((zValues_mental, i) => {
+        const mental_text = zValues_mental.map((zValues_mental, i) => {
         // console.log(zValues_mental, i)
             return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
-        }))
+        })
 
-        changeTextPhysical(zValues_physical.map((zValues_physical, i) => {
+        const physical_text = zValues_physical.map((zValues_physical, i) => {
             // console.log(zValues_mental, i)
             return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
-        }))
+        })
 
-        changeTextSocial(zValues_social.map((zValues_social, i) => {
+        const social_text = zValues_social.map((zValues_social, i) => {
             // console.log(zValues_mental, i)
             return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
-        }))
+        })
+        changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
 
     }, [])
 
     console.log("metric: ", metric);
     console.log("metric_values", metric_values);
-    console.log("user_z_value ", user_z_value)
+    console.log("user_z_value ", user_z_value);
+    console.log("allText: ", allText);
 
     // Polar Chart
     const scatterData = [
@@ -272,8 +245,6 @@ function Overview({activatedEle}) {
         },
     }
 
-
-
     // Bar Data
     const barChartData = [{
         type: 'bar',
@@ -281,11 +252,11 @@ function Overview({activatedEle}) {
         // y: mental_metric,
         y: metric['mental'],
         z: zValues_mental,
-        text: text_mental,
+        text: allText['mental'],
         textposition: "none",
         orientation: 'h',
         marker: {
-            color: mental_metric_value.map(function(v) {
+            color: metric_values['mental'].map(function(v) {
                 return v < 0 ? '#FF8974': '#01C696' 
             })
         },
