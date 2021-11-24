@@ -12,13 +12,17 @@ import Plotly from 'plotly.js';
 
 const Plot = createPlotlyComponent(Plotly);
 
-function Overview({activatedEle}) {
+function Overview({activatedEle, initialGoals}) {
+    // const activatedEle = props.activatedEle;
+    // const initialGoals = props.initialGoals;
 
     const [metric, changeMetrics] = useState({mental:[], physical: [], social: []});
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
     const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
     const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
     const [selectedAspect, setSelectedAspect] = useState('physical')
+    const [goals, setGoals] = useState({physical: 0, social: 0, mental: 0})
+    // const [goalInGraph, setGoalInGraph] = useState([0, 0, 0])
 
     // aggregated data
     const mental_data = require('../assets/mental_agg_week.json');
@@ -119,9 +123,9 @@ function Overview({activatedEle}) {
 
         changeMetrics(state => ({...state, physical: physical_temp, mental: mental_temp, social: social_temp}))
 
-        console.log("social_temp", social_temp);
-        console.log("mental_temp", mental_temp);
-        console.log("physical_temp", physical_temp)
+        // console.log("social_temp", social_temp);
+        // console.log("mental_temp", mental_temp);
+        // console.log("physical_temp", physical_temp)
         // changePhysicalMetric(state => ({...state, physical_temp}));
         // changeMentalMetric(mental_temp);
         // changeSocialMetric(social_temp);
@@ -201,12 +205,20 @@ function Overview({activatedEle}) {
         })
         changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
 
-    }, [])
+    }, [activatedEle])
 
-    console.log("metric: ", metric);
-    console.log("metric_values", metric_values);
-    console.log("user_z_value ", user_z_value);
-    console.log("allText: ", allText);
+    // changing goals
+    useEffect(() => {
+        // console.log("initialGoals: ", initialGoals)
+
+        setGoals({physical: initialGoals['physical'], mental: initialGoals['mental'], social: initialGoals['social']})
+        console.log("goals: ", goals);
+        // setGoalInGraph([goals['social'], goals['physical'], goals['mental']]);
+    }, [initialGoals])
+    // console.log("metric: ", metric);
+    // console.log("metric_values", metric_values);
+    // console.log("user_z_value ", user_z_value);
+    // console.log("allText: ", allText);
 
     // Polar Chart
     const scatterData = [
@@ -231,7 +243,7 @@ function Overview({activatedEle}) {
         {
             type: 'scatterpolar',
             mode: 'markers',
-            r: [28, 7, 8],
+            r: [goals['physical'], goals['mental'], goals['social']],
             theta: ['Social', 'Physical', 'Mental'],
             marker: {
                 symbol: "square",
@@ -341,9 +353,9 @@ function Overview({activatedEle}) {
                             <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
-                            <GoalCard health="Mental" percent="90%" metric={metric} />
-                            <GoalCard health="Physical" percent="90%" metric={metric} />
-                            <GoalCard health="Social" percent="90%" metric={metric} />
+                            <GoalCard health="Mental" percent="90%" metric={metric['mental']} />
+                            <GoalCard health="Physical" percent="90%" metric={metric['physical']} />
+                            <GoalCard health="Social" percent="90%" metric={metric['social']} />
                         </div>
                     </Grid>
                     <Grid item style={{border: '0px solid black', height: '40%'}}>

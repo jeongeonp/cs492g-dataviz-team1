@@ -8,93 +8,114 @@ import './Pages.css';
 import activity from '../assets/overall_cmp.json';
 
 
-function Activities(activatedEle) {
-    const [numElement, setNumElement] = useState()
+function Activities({activatedEle}) {
+    const [json, setJson] = useState(activity);
+
+    const [goodData, setGoodData] = useState({"name": "root",})
+    const [badData, setBadData] = useState({"name": "root",})
+
+    const [numElement, setNumElement] = useState(9)
+    const [maxSlider, setMaxSlider] = useState(9)
+    const [orderedScores, setOrderedScores] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+    const titleMap = {Calories: 'Calories', Pedometer: 'Pedometer', Valence: 'Valence', Arousal: 'Arousal', Attention: 'Attention', Stress: 'Stress', CallLog: 'Call Log', MessageLog: 'Message Log', SNSProp: 'SNS App Usage Ratio'}
+    const titleUnitMap = {Calories: 'Calories (kcal)', Pedometer: 'Pedometer (steps walked)', Valence: 'Valence', Arousal: 'Arousal', Attention: 'Attention', Stress: 'Stress', CallLog: 'Call Log (mins)', MessageLog: 'Message Log (# of messages)', SNSProp: 'SNS App Usage Ratio (%)'}
+    const unitMap = {Calories: 'kcal', Pedometer: 'Steps Walked', Valence: 'Score', Arousal: 'Score', Attention: 'Score', Stress: 'Score', CallLog: 'Minutes', MessageLog: '# of Messages', SNSProp: '% of SNS App Usage'}
+
+    // Editmode
+    useEffect(() => {
+        //console.log(activatedEle)
+        const newPhysical = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v]) // ['calories', 'pedometer']
+        const newMental = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
+        const newSocial = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
+
+        //console.log(newPhysical, newMental, newSocial)
+        const newMax = newPhysical.length + newMental.length + newSocial.length
+        setMaxSlider(newMax)
+        setNumElement(newMax)
+
+        /*
+        const sort_zscore = Object.values(activity.z_score).map(v => Math.abs(v))
+        sort_zscore.sort(function(a, b){return b-a})
+        //console.log(sort_zscore)
+        setOrderedScores(sort_zscore)
+
+        */
+
+        const newPhysical_false = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v] === false) // ['calories', 'pedometer']
+        const newMental_false = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v] === false)
+        const newSocial_false = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v] === false)
+        
+        const false_elem = newPhysical_false.concat(newMental_false, newSocial_false)
+        //console.log(false_elem)
+        //console.log(json)
+        for (var i in false_elem) {
+            delete json['others'][false_elem[i]]
+            delete json['p3012'][false_elem[i]]
+            delete json['z_score'][false_elem[i]]
+        }
+        //console.log(json)
+
+        setJson(json)
+        changeZscore()
+
+    }, [activatedEle])
+
+    // Initial Rendering
+    useEffect(() => {
+        changeZscore()
+    }, [])
+
+    const changeZscore = () => {
+        const sort_zscore = Object.values(json.z_score).map(v => Math.abs(v))
+        sort_zscore.sort(function(a, b){return b-a})
+        //console.log("NEw ZSCORE", sort_zscore)
+        setOrderedScores(sort_zscore)
+    }
 
     useEffect(() => {
-        setNumElement(getActivatedEleNum(activatedEle));
-        console.log(activity)
-    }, [])
+        var goodData_temp = []
+        var badData_temp = []
+
+        //console.log("XXXX", orderedScores[numElement-1])
+
+        setGoodData({"name": "root", "children": goodData_temp})
+        setBadData({"name": "root", "children": badData_temp})
+
+        for (var i in Object.keys(json.p3012)) {
+            const element = Object.keys(json.p3012)[i]
+            if (json.z_score[element] >= 0 && json.z_score[element] >= orderedScores[numElement-1]) {
+                goodData_temp.push({
+                    "name": titleMap[element],
+                    "value": json.z_score[element],
+                    "p3012": json.p3012[element],
+                    "others": json.others[element],
+                    "name_unit": titleUnitMap[element]
+                })
+            }
+            if (json.z_score[element] < 0 && json.z_score[element] <= -orderedScores[numElement-1]) {
+                badData_temp.push({
+                    "name": titleMap[element],
+                    "value": -json.z_score[element],
+                    "p3012": json.p3012[element],
+                    "others": json.others[element],
+                    "name_unit": titleUnitMap[element]
+                })
+            }
+        }
+
+        //console.log(goodData_temp)
+        //console.log(badData_temp)
+
+        setGoodData({"name": "root", "children": goodData_temp})
+        setBadData({"name": "root", "children": badData_temp})
+    }, [numElement])
 
     const getActivatedEleNum = (activatedEle) => {
         var str = JSON.stringify(activatedEle);
         var initial_count = (str.split('true')).length - 1
         return initial_count 
     }
-
-    const separateData = (activatedEle) => {
-        
-
-    }
-
-    const good_data = {
-        "name": "root",
-        "children": [
-            {
-            "name": "Message Log",
-            "value": 0.7961778933,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-
-            },
-            {
-            "name": "Arousal",
-            "value": 0.4626475787,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },       
-        ]
-    }
-
-    const bad_data = {
-        "name": "root",
-        "children": [
-            {
-            "name": "Valence",
-            "value": 0.009320999554,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Pedometer",
-            "value": 0.03814630631,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Sns Ratio",
-            "value": 0.09563653303,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Call Log",
-            "value": 0.1202137128,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Calories",
-            "value": 0.1395309915,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Attention",
-            "value": 0.3183039581,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            {
-            "name": "Stress",
-            "value": 0.5556021315,
-            "p3012": 0.7253143682,
-            "others": 0.7317367553,
-            },
-            
-        ]
-    }
-    
 
     const handleSliderChange = (event, newValue) => {
         setNumElement(newValue);
@@ -116,7 +137,7 @@ function Activities(activatedEle) {
                         defaultValue={numElement}
                         valueLabelDisplay="on"
                         min={2}
-                        max={9}
+                        max={maxSlider}
                         onChange={handleSliderChange}
                     /> 
                     <p>No. of <br/> elements<br/> shown</p>
@@ -125,7 +146,7 @@ function Activities(activatedEle) {
                 <div className="goodBubble">
                     <h3>Better</h3>
                     <ResponsiveCirclePackingCanvas
-                        data={good_data}
+                        data={goodData}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                         id="name"
                         colors="#01C696"
@@ -139,9 +160,10 @@ function Activities(activatedEle) {
                         tooltip={(input) => {
                             return(
                             <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '5px' }}>
-                                <b>{input.data.name}</b> <br/>
-                                my {input.data.p3012} <br/>
-                                others {input.data.others}
+                                <b style={{color: '#01C696', fontWeight: '900'}}>{input.data.name_unit}</b> <br/>
+                                Your value: {input.data.p3012.toFixed(2)} <br/>
+                                Others' average value: {input.data.others.toFixed(2)} <br/>
+                                <b style={{fontSize: '110%'}}>😊 Your value is {input.data.value.toFixed(2)*100}% higher than others</b>
                             </div>
                             )
                         }}
@@ -151,7 +173,7 @@ function Activities(activatedEle) {
                     <h3>Worse</h3>
                     
                     <ResponsiveCirclePackingCanvas
-                        data={bad_data}
+                        data={badData}
                         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
                         id="name"
                         colors="#ff8974"
@@ -165,8 +187,10 @@ function Activities(activatedEle) {
                         tooltip={(input) => {
                             return(
                             <div style={{ color:'black', backgroundColor: 'white', padding: '0px 5px', boxShadow: '1px 1px 1px gray', borderRadius: '5px' }}>
-                                my {input.data.name} <b>{input.data.p3012}</b> <br/>
-                                others {input.data.name} <b>{input.data.others}</b>
+                                <b style={{color: '#ff8974', fontWeight: '900'}}>{input.data.name_unit}</b> <br/>
+                                Your value: {input.data.p3012.toFixed(2)} <br/>
+                                Others' average value: {input.data.others.toFixed(2)} <br/>
+                                <b style={{fontSize: '110%'}}>😞 Your value is {(input.data.value.toFixed(2)*100).toFixed(0)}% lower than others</b>
                             </div>
                             )
                         }}
@@ -176,17 +200,17 @@ function Activities(activatedEle) {
             </div>
             <div className="bubbleInfo">
                 <h4 className="panel-title">HOW TO READ</h4>
-                <p className="infoTitle">Circle Areas</p>
-                <span className="description">The larger the area, the higher the contribution.</span>
-                <p className="infoTitle">Category</p>
-                <span className="description">The categories are determined by</span>
+                <p className="infoTitle" style={{marginTop: '15px'}}>Circle Areas</p>
+                <span className="description">The larger the area, the higher the difference between your data and others' average data.</span>
+                <p className="infoTitle" style={{marginTop: '15px'}}>Category</p>
+                <span className="description">The colors of the categories indicate</span>
                 <div className="circleBlock">
                     <div className="goodCircle"></div>
-                    <p>Good Activity</p>
+                    <p>that you are performing better than others' average.</p>
                 </div>
                 <div className="circleBlock">
                     <div className="badCircle"></div>
-                    <p>Bad Activity</p>
+                    <p>that you are performing worse than others' average.</p>
                 </div>
             </div>
         </div>
