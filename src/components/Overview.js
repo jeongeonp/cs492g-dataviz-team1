@@ -10,6 +10,9 @@ import createPlotlyComponent from 'react-plotly.js/factory';
 import _Plot from 'plotly.js/dist/plotly-cartesian';
 import Plotly from 'plotly.js';
 
+// data
+import mental from '../assets/mental_agg_week.json';
+
 const Plot = createPlotlyComponent(Plotly);
 
 function Overview() {
@@ -17,6 +20,52 @@ function Overview() {
     const [highlighted, setHighlighted] = useState(null);
     const scatterPlotRef = useRef();
 
+    // aggregated data
+    const mental_data = require('../assets/mental_agg_week.json');
+    const physical_data = require('../assets/physical_agg_week.json');
+    const social_data = require('../assets/social_agg_week.json');
+    const user_z_value = [social_data["z_social"]['0']*250, physical_data['z_physical']['0']*250, mental_data['z_mental']['0']*250]
+    // console.log(user_z_value)
+
+    // metrics
+    const physical_metric = ['Overall', 'Calories Burned', 'Steps'];
+    const mental_metric = ['Overall', 'Stress', 'Valence', 'Arousal', 'Attention'];
+    const social_metric = ['Overall', 'Call Log', 'Message Log', 'Phone Log', 'SNS Log', 'SNS Prop'];
+
+    // values of each metric
+    const mental_metric_value = [mental_data['z_mental']['0'], mental_data['z_Stress']['0'], mental_data['z_Valence']['0'], mental_data['z_Arousal']['0'], mental_data['z_Attention']['0']]
+    const physical_metric_value = [physical_data['z_Calories']['0'], physical_data['z_Pedometer']['0']]
+    const social_metric_value = [social_data['z_social']['0'], social_data['z_calllog']['0'], social_data['z_messagelog']['0'], social_data['z_phonelog']['0'], social_data['z_snslog']['0'], social_data['z_snsprop']['0']]
+
+    // [[my, others]]
+    const zValues_mental = [
+        [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
+        [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
+        [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
+        [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
+        [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']]
+    ]
+    console.log("mental: ", zValues_mental);
+
+    const zValues_physical = [
+        [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
+        [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
+        [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']],
+    ]
+
+    const zValues_social = [
+        [social_data['z_social']['0'], social_data['z_social']['0']], 
+        [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
+        [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
+        [social_data['p3012_phonelog']['0'], social_data['others_phonelog']['0']],
+        [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
+        [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
+    ]
+
+    var text_mental = zValues_mental.map((zValues_mental, i) => {
+        console.log(zValues_mental, i)
+        return `<b>${mental_metric[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
+    })
 
     const axisConfig = [
         {label: 'Mental', axisId: "mental", axisValueMax: 200, axisValueMin: 0},
@@ -24,98 +73,31 @@ function Overview() {
         {label: 'Physical', axisId: "physical", axisValueMax: 200, axisValueMin: 0},
     ];
 
-    const data = [
-        {
-          label: 'My health',
-          seriesId: 'my',
-          dragEnabled: false,
-          showCircle: true,
-          circleHighlight: true,
-          fill: 'royalblue',
-          data: [
-            {axis: "mental", value: 154},
-            {axis: "social", value: 85},
-            {axis: "physical", value: 126},
-          ]
-        },
-        {
-            label: "Others' health",
-            seriesId: 'others',
-            dragEnabled: false,
-            showCircle: false,
-            circleHighlight: true,
-            fill: 'gray',
-            data: [
-              {axis: "mental", value: 100},
-              {axis: "social", value: 100},
-              {axis: "physical", value: 100},
-            ]
-          },
-    ]
-
-    const options = {
-        chartRootName: 'example',
-        data,
-        dims: {
-          width: 500,
-          height: 500,
-        },
-        showLegend: true,
-        rootElementId: 'chart',
-        axisConfig,
-        options: {
-            axis: {
-                rotateTextWithAxis: false,
-            },
-            legend: {
-                title: 'Colors'
-            }
-        }
-    };
-
-    const barChartData = [{
-        type: 'bar',
-        x: [20, 14, 23, 34],
-        y: ['Overall', 'Calories Burned', 'Steps', 'UV Exposure'],
-        orientation: 'h',
-      }];
-    const barLayout = {
-        autosize: false,
-        width: 1400,
-        height: 400,
-        margin: {
-            l: 150,
-            r: 50,
-            b: 100,
-            t: 40,
-            pad: 4
-          },
-    }
-
+    // Polar Chart
     const scatterData = [
         {
             type: 'scatterpolar',
             mode: 'lines',
-            r: [39, 28, 8, 7, 28, 39],
-            theta: ['Physical', 'Social', 'Mental'],
-            fill: 'toself',
-            name: 'You',
-            // subplot: "polar"
-        },
-        {
-            type: 'scatterpolar',
-            mode: 'lines',
-            r: [28, 7, 8, 8, 10, 39],
-            theta: ['Physical', 'Social', 'Mental'],
+            r: [0, 0, 0],
+            theta: ['Social', 'Physical', 'Mental'],
             fill: 'toself',
             name: 'Other Users',
             // subplot: "polar2"
         },
         {
             type: 'scatterpolar',
+            mode: 'lines',
+            r: user_z_value,
+            theta: ['Social', 'Physical', 'Mental'],
+            fill: 'toself',
+            name: 'You',
+            // subplot: "polar"
+        },
+        {
+            type: 'scatterpolar',
             mode: 'markers',
             r: [28, 7, 8],
-            theta: ['Physical', 'Social', 'Mental'],
+            theta: ['Social', 'Physical', 'Mental'],
             marker: {
                 symbol: "square",
                 color: 'black',
@@ -127,11 +109,6 @@ function Overview() {
       
     const scatterLayout = {
         polar: {
-            // bgcolor: 'red',
-            // domain: {
-            //     x: [0, 0.5],
-            //     y: [0, 0.5]
-            // },
             radialaxis: {
               visible: true,
               range: [-100, 100], // 0부터 시작해서 200까지 나타내게!
@@ -145,123 +122,49 @@ function Overview() {
         },
     }
 
-    // Plotly.newPlot('graphDiv', data, layout);
-    const categories = ['Physical', 'Social', 'Mental'];
-    // values
-    const value1 = [39, 28, 8, 7, 28, 39, 100, -100];
-    const value2 = [28, 7, 8, 8, 10, 39, -50, 50];
-    const rAllMax = Math.max(value1+value2);
 
-    // colors
-    const range1 = [-100,0];
-    const rangeColors = ['rgba(255, 0, 0, 0.9)', 'rgba(0, 255, 0, 0.9)'];
 
-    // calculations
-    const slices = value1.length;
-    const fields = [Math.max(value1)]*slices;
-    const circle_split = [360/slices]*(slices);
-    const theta = 0;
-    const thetas = [0];
-    for (let i=0; i < circle_split.length; i++) {
-        const t = circle_split[i];
-        theta = theta + t;
-        thetas.push(theta);
-    }
-
-    // label positions
-    const positions = ['middle right', 'middle right', 'bottom center', 'middle left', 'middle left', 'middle left']
-    
-    // background
-    const barPolarData = []
-    for (let j=0; j < rangeColors.length; j++) {
-        const data = {
-            type: 'barpolar',
-            // mode: 'lines',
-            r: [range1[j]],
-            width: 360,
-            marker: {
-                color: [rangeColors[j]],
-            },
-            opacity: 0.6, 
-            name: 'Range ' + (j+1).toString(),
-        }
-        // j = j+1;
-        barPolarData.push(data);
-    }
-
-    for (let [index, value] of categories.entries()) {
-        console.log(index, value);
-        barPolarData.push({
-            type: 'scatterpolar',
-            text: value,
-            r: [rAllMax],
-            theta: [thetas[index]],
-            fill: 'toself',
-            mode: 'lines+text+markers',
-            fillcolor: 'rgba(255, 255, 255, 0.4)',
-            line: {
-                color: 'black',
-            },
-            marker: {
-                color: 'black',
-                symbol: 'circle',
-            },
-            name: value,
-            showLegend: false,
-        })
-    }
-
-    // trace 1
-    barPolarData.push({
-        type: 'scatterpolar',
-        mode: 'lines+text+markers',
-        r: value1,
-        fill: 'toself',
-        bgcolor: 'rgba(0, 0, 255, 0.4)',
-        textposition: 'bottom center',
+    // Bar Data
+    const barChartData = [{
+        type: 'bar',
+        x: mental_metric_value,
+        y: mental_metric,
+        z: zValues_mental,
+        text: text_mental,
+        textposition: "none",
+        orientation: 'h',
         marker: {
-            color: 'blue',
+            color: mental_metric_value.map(function(v) {
+                return v < 0 ? '#FF8974': '#01C696' 
+            })
         },
-        name: 'You',
-    });
+        hovertemplate: "%{text}",
+        // hoverinfo: 'text',
+      }];
 
-    // trace 2 
-    barPolarData.push({
-        type: 'scatterpolar',
-        mode: 'lines+text+markers',
-        r: value2,
-        fill: 'toself',
-        bgcolor: 'rgba(0, 0, 255, 0.4)',
-        textposition: 'bottom center',
-        marker: {
-            color: 'Green',
+    const barLayout = {
+        autosize: false,
+        width: 1100,
+        height: 400,
+        margin: {
+            l: 150,
+            r: 50,
+            b: 100,
+            t: 40,
+            pad: 4
         },
-        name: 'Other',
-    })
-
-    const barPolarLayout = {
-        // template: null,
-        polar: {
-            radialaxis: {
-                gridwidth: 0.5,
-                range: [0, Math.max(fields)],
-                showticklabels: true, 
-                ticks: '',
-                gridcolor: "grey"
-            },
-            angularaxis: {
-                showticklabels: false,
-                ticks: '',
-                rotation: 45,
-                direction: "clockwise",
-                gridcolor: "white"
-            }
+        xaxis: {
+            range: [-1, 1],
+            title: "Percentage Compared to Others",
+            zeroline: false,
+            tickformat: ",.0%",
         },
         yaxis: {
-            showline: true,
-            linewidth: 2,
-            linecolor: 'white',
-          }
+            title: "Chosen Metric",
+            zeroline: false,
+            categoryarray: mental_metric,
+            categoryorder: "array"
+        }
     }
 
     const hover = (hovered) => {
@@ -280,6 +183,9 @@ function Overview() {
 
     const metric = ['Emotion Level', 'Disturbance level']
 
+    // radar graph: z_mental * 25
+    // bar graph -> specifics z_metric
+    // on bar graph, show z_stress and when hovering show p3012_stress and others info (because they have really different ranges)
     return (
         <div>
             <h2>Overview Page</h2>
@@ -296,11 +202,6 @@ function Overview() {
                             data={scatterData}
                             layout={scatterLayout}
                         />
-                        {/* <Plot
-                            data={barPolarData}
-                            layout={barPolarLayout}
-                        />
-                        <div id="graphDiv"></div> */}
                     </Grid>
                     <Grid item style={{border: '0px solid black'}}>
                         <h4 className="panel-title">
