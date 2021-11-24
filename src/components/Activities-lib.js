@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import Slider from "@material-ui/core/Slider";
+import { Button, Popup, Icon } from 'semantic-ui-react'
 
 import { ResponsiveCirclePackingCanvas } from '@nivo/circle-packing';
 
@@ -125,8 +126,12 @@ function Activities({activatedEle}) {
         <div>
             <h2>Activity Management</h2>
             <div className="bubbleContainer">
-                <h4 className="panel-title">Comparison</h4>
-                <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
+                <h4 className="panel-title">
+                    <span>Comparison </span>
+                    <span style={{width: '2px'}}></span>
+                    <Popup content="This panel shows elements where you are doing well and worse. The values are calculated by summing the z-scores of each day." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                </h4>
+                <p className="panel-date">May 2019, Week 1 (April 30th - May 6th)</p>
                 <div className="controlBar">
                     <div className="controlBlock">
                     <Slider 
@@ -203,7 +208,7 @@ function Activities({activatedEle}) {
             <div className="bubbleInfo">
                 <h4 className="panel-title">HOW TO READ</h4>
                 <p className="infoTitle" style={{marginTop: '15px'}}>Circle Areas</p>
-                <span className="description">The larger the area, the higher the difference between your data and others' average data.</span>
+                <span className="description">The larger the area, the higher the difference between your data and others' average data among the bubbles with the same color.</span>
                 <p className="infoTitle" style={{marginTop: '15px'}}>Category</p>
                 <span className="description">The colors of the categories indicate</span>
                 <div className="circleBlock">

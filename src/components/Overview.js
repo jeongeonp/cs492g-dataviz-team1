@@ -328,7 +328,7 @@ function Overview({activatedEle}) {
                     <h4 className="panel-title">
                         <span>HEALTH TRIANGLE </span>
                         <span style={{width: '2px'}}></span>
-                        <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                        <Popup content="This panel is to show the overview of each of the health aspects, which are calculated by taking the average of your weekly data and comparing with others' average to get the z-scores. Afterwards, the z-scores were converted to a scale of -100 to 100 for easier understanding." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                     </h4>
                         <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                         <Plot
@@ -340,7 +340,7 @@ function Overview({activatedEle}) {
                         <h4 className="panel-title">
                             <span>CURRENT GOALS </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
                             <GoalCard health="Mental" percent="90%" metric={metric} />
@@ -352,7 +352,7 @@ function Overview({activatedEle}) {
                         <h4 className="panel-title">
                             <span>ASPECT PERCENTAGE </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content='This panel is...' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content="This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <h2 style={{margin: '0'}}>Physical</h2>
                         <Plot

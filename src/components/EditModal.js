@@ -99,7 +99,7 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
   };
 
   const question_context =
-  'Initial value for the goal is set to 0. You can change this value between -100 to 100. But as this score is based on the z score, we highly recommend to set the value between -25 to 25. You can add or remove each elements for tracking with checkbox. Make sure at least 1 element should be contained in each aspect.'
+  'Initial value for the goal is set to 0. You can change this value between -100 to 100. \nBut as this score is based on the z score, we highly recommend to set the value between -25 to 25. You can add or remove each elements for tracking with checkbox. Make sure at least 1 element is contained in each health aspect.'
 
 
   return (
@@ -111,7 +111,7 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
     >
       <Modal.Header>
         Edit Mode
-        <Popup content={question_context} trigger={<Icon disabled name='help circle' />} size='tiny'/>
+        <Popup content={question_context} trigger={<Icon disabled name='help circle' />} wide='very'/>
       </Modal.Header>
       <Modal.Content>
         <Modal.Description>
