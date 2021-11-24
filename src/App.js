@@ -81,7 +81,9 @@ function App() {
           <Overview />
         </TabPanel>
         <TabPanel value="2">
-          <Trend />
+          <Trend 
+            activatedEle = {activatedEle}
+          />
         </TabPanel>
         <TabPanel value="3">
           <Activities />

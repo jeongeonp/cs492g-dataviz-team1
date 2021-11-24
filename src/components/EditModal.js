@@ -1,6 +1,6 @@
 import React, { useState, } from 'react';
 
-import { Button, Header, Form, Modal, Input } from 'semantic-ui-react'
+import { Button, Header, Form, Modal, Input,  Popup, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 
@@ -11,21 +11,30 @@ const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
   const [mentalGoal, setMentalGoal] = useState('0');
   const [socialGoal, setSocialGoal] = useState('0');
 
-  const [physicalEle, setPhysicalEle] = useState();
-  const [mentalEle, setMentalEle] = useState();
-  const [socialEle, setSocialEle] = useState();
+  const [physicalEle, setPhysicalEle] = useState(activatedEle.physical);
+  const [mentalEle, setMentalEle] = useState(activatedEle.mental);
+  const [socialEle, setSocialEle] = useState(activatedEle.social);
 
   const handleDone = () => {
 
-  }
+    var updatedGoal = {
+      physical: parseInt(physicalGoal), 
+      mental: parseInt(mentalGoal), 
+      social: parseInt(socialGoal)
+    };
 
+    var updatedEle = {
+      physical: physicalEle,
+      mental: mentalEle, 
+      social: socialEle
+    };
 
-  const handleChangeElements = () => {
+    console.log(updatedGoal)
+    console.log(updatedEle)
 
-  }
-
-  const handleChangeGoals = () => {
-
+    changeGoals(updatedGoal);
+    changeEle(updatedEle);
+    setOpen(false);
   }
 
   return (
@@ -35,36 +44,75 @@ const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
       open={open}
       trigger={<Button>Edit Mode</Button>}
     >
-      <Modal.Header>Edit Mode</Modal.Header>
+      <Modal.Header>
+        Edit Mode
+        <Popup content='original goal is set to 0' trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+      </Modal.Header>
       <Modal.Content>
         <Modal.Description>
           <Header>Physical</Header>
           <Input 
             placeholder='-100 ~ 100'
             value={physicalGoal}
-            onChange={({ target: { value } }) => setPhysicalGoal(value)}
+            onChange={(e) => setPhysicalGoal(e.target.value)}
           />
-          <Form.Checkbox label='Calories'/>
-          <Form.Checkbox label='Pedometer'/>
+          <Form.Checkbox 
+            label='Calories'
+            checked={physicalEle.Calories}
+            onChange={(e) => setPhysicalEle({...physicalEle, Calories: !physicalEle.Calories})}
+          />
+          <Form.Checkbox 
+            label='Pedometer'
+            checked={physicalEle.Pedometer}
+            onChange={(e) => setPhysicalEle({...physicalEle, Pedometer: !physicalEle.Pedometer})}
+          />
           <Header>Mental</Header>
           <Input 
             placeholder='-100 ~ 100'
             value={mentalGoal}
-            onChange={({ target: { value } }) => setMentalGoal(value)}
+            onChange={(e) => setMentalGoal(e.target.value)}
           />
-          <Form.Checkbox label='Valence'/>
-          <Form.Checkbox label='Arousal'/>
-          <Form.Checkbox label='Attention'/>
-          <Form.Checkbox label='Stress'/>
+          <Form.Checkbox 
+            label='Valence'
+            checked={mentalEle.Valence}
+            onChange={(e) => setMentalEle({...mentalEle, Valence: !mentalEle.Valence})}
+          />
+          <Form.Checkbox 
+            label='Arousal'
+            checked={mentalEle.Arousal}
+            onChange={(e) => setMentalEle({...mentalEle, Arousal: !mentalEle.Arousal})}
+          />
+          <Form.Checkbox 
+            label='Attention'
+            checked={mentalEle.Attention}
+            onChange={(e) => setMentalEle({...mentalEle, Attention: !mentalEle.Attention})}
+          />
+          <Form.Checkbox 
+            label='Stress'
+            checked={mentalEle.Stress}
+            onChange={(e) => setMentalEle({...mentalEle, Stress: !mentalEle.Stress})}
+          />
           <Header>Social</Header>
           <Input 
             placeholder='-100 ~ 100'
             value={socialGoal}
-            onChange={({ target: { value } }) => setSocialGoal(value)}
+            onChange={(e) => setSocialGoal(e.target.value)}
           />
-          <Form.Checkbox label='Call Log'/>
-          <Form.Checkbox label='Message Log'/>
-          <Form.Checkbox label='SNS App Usage Ratio'/>
+          <Form.Checkbox 
+            label='Call Log'
+            checked={socialEle.CallLog}
+            onChange={(e) => setSocialEle({...socialEle, CallLog: !socialEle.CallLog})}
+          />
+          <Form.Checkbox 
+            label='Message Log'
+            checked={socialEle.MessageLog}
+            onChange={(e) => setSocialEle({...socialEle, MessageLog: !socialEle.MessageLog})}
+          />
+          <Form.Checkbox 
+            label='SNS APP Usage ratio'
+            checked={socialEle.SNSProp}
+            onChange={(e) => setSocialEle({...socialEle, SNSProp: !socialEle.SNSProp})}
+          />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
@@ -75,7 +123,7 @@ const EditModal = ({ activatedEle, changeEle, goals, changeGoals }) => {
           content="Done"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => setOpen(false)}
+          onClick={handleDone}
           positive
         />
       </Modal.Actions>

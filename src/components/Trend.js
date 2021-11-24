@@ -39,7 +39,8 @@ var dates = {
 
 }
 
-function Trend() {
+function Trend({activatedEle}) {
+    console.log(activatedEle)
     const [myData, setMyData] = useState(dates)
     const [othersData, setOthersData] = useState(dates)
 
