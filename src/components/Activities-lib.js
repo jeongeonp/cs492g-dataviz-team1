@@ -125,9 +125,10 @@ function Activities({activatedEle}) {
         <div>
             <h2>Activity Management</h2>
             <div className="bubbleContainer">
-                <h4 className="panel-title">Overall Trend</h4>
+                <h4 className="panel-title">Comparison</h4>
                 <p className="panel-date">Oct 2021, Week 1 (1st - 7th)</p>
                 <div className="controlBar">
+                    <div className="controlBlock">
                     <Slider 
                         key={`slider-${numElement}`}
                         aria-label="Num. of Elements"
@@ -139,8 +140,9 @@ function Activities({activatedEle}) {
                         min={2}
                         max={maxSlider}
                         onChange={handleSliderChange}
-                    /> 
+                    />
                     <p>No. of <br/> elements<br/> shown</p>
+                    </div> 
                 </div>
 
                 <div className="goodBubble">
