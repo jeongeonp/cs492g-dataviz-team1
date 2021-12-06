@@ -17,7 +17,7 @@ import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import 'semantic-ui-css/semantic.min.css'
-import reBalanceLogo from './assets/reBalance-logos_black.png';
+import reBalanceLogo from './assets/rebalance-logo.svg';
 
 const initialActivatedEle = {
   physical: {
@@ -63,7 +63,7 @@ function App() {
             <Grid.Row style={{paddingBottom: '0'}} columns='equal' centered>
               <Grid.Column textAlign='justified'>
               {/*<h3>reBalance</h3>*/}
-                <Image style={{height: '50px', marginTop: '10px'}} src={reBalanceLogo}></Image>
+                <Image style={{height: '35px', marginTop: '20px'}} src={reBalanceLogo}></Image>
               </Grid.Column> 
               <Grid.Column style={{paddingTop: '20px'}} textAlign='center'>
                 <HelpModal />

@@ -16,7 +16,7 @@ function HelpModal() {
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button size="small" basic color='standard' floated="left">Help <Icon style={{margin: '0px', padding: '0px'}} name="lightbulb outline"/></Button>}
+            trigger={<Button size="small" basic color="blue" floated="left">Help <Icon style={{margin: '0px', padding: '0px'}} name="lightbulb outline"/></Button>}
         >
         <Modal.Header>Welcome!</Modal.Header>
         <Modal.Content>
@@ -47,7 +47,7 @@ function HelpModal() {
             </span>
         </Modal.Content>
         <Modal.Actions>
-            <Button color='standard' floated='center' onClick={() => setOpen(false)}>
+            <Button style={{backgroundColor: '#2196f3', color: 'white'}} floated='center' onClick={() => setOpen(false)}>
             Begin exploration!
             </Button>
         </Modal.Actions>
