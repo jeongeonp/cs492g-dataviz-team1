@@ -9,7 +9,7 @@ import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 
 
 function HelpModal() {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
 
     return (
         <Modal
