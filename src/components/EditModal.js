@@ -108,7 +108,7 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
       onOpen={() => setOpen(true)}
       open={open}
       closeOnDimmerClick={false}
-      trigger={<Button size="tiny"  color='blue'>Edit Mode <Icon style={{margin: '0px', padding: '0px'}} name="edit outline"/></Button>}
+      trigger={<Button size="small"  color='standard' floated='left'>Edit Mode <Icon style={{margin: '0px 0px 0px 3px', padding: '0px'}} name="edit outline"/></Button>}
     >
       <Modal.Header>
         Edit Mode: Define your own health!

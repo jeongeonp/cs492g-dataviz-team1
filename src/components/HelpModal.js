@@ -9,14 +9,14 @@ import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 
 
 function HelpModal() {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
 
     return (
         <Modal
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
             open={open}
-            trigger={<Button size="tiny" basic color='blue'>Help Guide <Icon style={{margin: '0px', padding: '0px'}} name="lightbulb outline"/></Button>}
+            trigger={<Button size="small" basic color='standard' floated="left">Help <Icon style={{margin: '0px', padding: '0px'}} name="lightbulb outline"/></Button>}
         >
         <Modal.Header>Welcome!</Modal.Header>
         <Modal.Content>

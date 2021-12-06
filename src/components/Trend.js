@@ -224,7 +224,7 @@ function Trend({activatedEle}) {
                             y: myData.y,
                             type: 'scatter',
                             mode: 'lines+markers',
-                            marker: {color: '#F88923'},
+                            marker: {color: '#f88923'},
                             name: 'You',
                         },
                         {
@@ -232,7 +232,7 @@ function Trend({activatedEle}) {
                             y: othersData.y,
                             type: 'scatter',
                             mode: 'lines+markers',
-                            marker: {color: 'gray'},
+                            marker: {color: '#aaa'},
                             name: "Other Users' Average",
                         },
                         ]}
@@ -271,7 +271,7 @@ function Trend({activatedEle}) {
                                 y: multipleMy[selectedAspect][e].y,
                                 type: 'scatter',
                                 mode: 'lines+markers',
-                                marker: {color: '#F88923'},
+                                marker: {color: '#f88923'},
                                 name: 'You',
                             },
                             {
@@ -279,7 +279,7 @@ function Trend({activatedEle}) {
                                 y: multipleOthers[selectedAspect][e].y,
                                 type: 'scatter',
                                 mode: 'lines+markers',
-                                marker: {color: 'gray'},
+                                marker: {color: '#aaa'},
                                 name: "Other Users",
                             },
                             ]}
