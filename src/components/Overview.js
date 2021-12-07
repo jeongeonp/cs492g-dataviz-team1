@@ -21,7 +21,6 @@ function Overview({activatedEle, initialGoals}) {
     const [goals, setGoals] = useState(initialGoals);
 
     const goalsString = JSON.stringify(initialGoals);
-    console.log(goalsString)
 
     // aggregated data
     const mental_data = require('../assets/mental_agg_week.json');
@@ -36,27 +35,27 @@ function Overview({activatedEle, initialGoals}) {
     const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
     const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
 
-    const zValues_mental_data = {
-        'Overall': [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
-        'Stress': [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
-        'Valence': [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
-        'Arousal': [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
-        'Attention': [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']]
-    }
+    // const zValues_mental_data = {
+    //     'Overall': [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
+    //     'Stress': [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
+    //     'Valence': [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
+    //     'Arousal': [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
+    //     'Attention': [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']]
+    // }
 
-    const zValues_physical_data = {
-        "Overall": [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
-        "Calories": [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
-        "Pedometer": [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']]
-    }
+    // const zValues_physical_data = {
+    //     "Overall": [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
+    //     "Calories": [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
+    //     "Pedometer": [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']]
+    // }
 
-    const zValues_social_data = {
-        "Overall": [social_data['z_social']['0'], social_data['z_social']['0']], 
-        "CallLog": [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
-        "MessageLog": [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
-        "SNSLog": [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
-        "SNSProp": [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
-    }
+    // const zValues_social_data = {
+    //     "Overall": [social_data['z_social']['0'], social_data['z_social']['0']], 
+    //     "CallLog": [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
+    //     "MessageLog": [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
+    //     "SNSLog": [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
+    //     "SNSProp": [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
+    // }
 
     const zValues_mental = [
         [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
@@ -88,7 +87,6 @@ function Overview({activatedEle, initialGoals}) {
         var social_temp = [];
         var mental_temp = [];
         Object.entries(activatedEle).forEach(([key, value]) => {
-            // console.log(props.activatedEle["physical"]);
             if (key == "physical") {
                 Object.entries(activatedEle["physical"]).forEach(([key, value]) => {
                     if (value) {
@@ -210,8 +208,35 @@ function Overview({activatedEle, initialGoals}) {
     useEffect(() => {
         var newGoals = {physical: initialGoals['physical'], mental: initialGoals['mental'], social: initialGoals['social']}
         setGoals(newGoals);
-        console.log(newGoals)
     }, [goalsString])
+
+    const getPercentFromZ = (z) => {
+        console.log(z)
+      
+        if (z < -6.5) {
+          return 0.0;
+        }
+      
+        if (z > 6.5) {
+          return 1.0;
+        }
+      
+        var factK = 1;
+        var sum = 0;
+        var term = 1;
+        var k = 0;
+        var loopStop = Math.exp(-23);
+      
+        while(Math.abs(term) > loopStop) {
+          term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
+          sum += term;
+          k++;
+          factK *= k;
+        }
+      
+        sum += 0.5;
+        return sum * 100;
+      }
 
 
     // Polar Chart
@@ -219,7 +244,7 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'lines+markers+text',
-            r: user_z_value.map(w => w*250),
+            r: user_z_value.map(w => getPercentFromZ(w)),
             theta: ['Physical', 'Mental', 'Social'],
             fill: 'toself',
             name: 'You',
@@ -234,7 +259,7 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'lines+markers+text',
-            r: [0, 0, 0],
+            r: [50, 50, 50],
             theta: ['Physical', 'Mental', 'Social'],
             fill: 'toself',
             name: "Other Users' Average",
@@ -270,7 +295,7 @@ function Overview({activatedEle, initialGoals}) {
         polar: {
             radialaxis: {
               visible: true,
-              range: [-100, 100], // 0부터 시작해서 200까지 나타내게!
+              range: [0, 100],
               color: '#777',
               showticklabels: true
             },
@@ -286,7 +311,6 @@ function Overview({activatedEle, initialGoals}) {
     const barChartData = [{
         type: 'bar',
         x: metric_values[selectedAspect],
-        // y: mental_metric,
         y: metric[selectedAspect],
         z: zValues_mental,
         text: allText[selectedAspect],
@@ -298,7 +322,6 @@ function Overview({activatedEle, initialGoals}) {
             })
         },
         hovertemplate: "%{text}",
-        // hoverinfo: 'text',
       }];
 
     const barLayout = {
@@ -367,9 +390,9 @@ function Overview({activatedEle, initialGoals}) {
                             <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '', paddingTop: '0.5em'}}>
-                            <GoalCard health="Mental" percent={goals['mental'].toString()+'%'} metric={metric['mental']} />
-                            <GoalCard health="Physical" percent={goals['physical'].toString()+'%'}metric={metric['physical']} />
-                            <GoalCard health="Social" percent={goals['social'].toString()+'%'} metric={metric['social']} />
+                            <GoalCard health="Mental" percent={goals['mental'].toString()+'th percentile'} metric={metric['mental']} />
+                            <GoalCard health="Physical" percent={goals['physical'].toString()+'th percentile'}metric={metric['physical']} />
+                            <GoalCard health="Social" percent={goals['social'].toString()+'th percentile'} metric={metric['social']} />
                         </div>
                     </Grid.Column>
                     </Grid.Row>

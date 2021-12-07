@@ -38,9 +38,9 @@ const initialActivatedEle = {
 };
 
 const initialGoals = {
-  physical: 0,
-  mental: 0,
-  social: 0
+  physical: 50,
+  mental: 50,
+  social: 50
 }
 
 function App() {

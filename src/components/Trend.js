@@ -129,6 +129,7 @@ function Trend({activatedEle}) {
     }
 
     const getPercentFromZ = (z) => {
+        console.log(z)
       
         if (z < -6.5) {
           return 0.0;
@@ -152,20 +153,20 @@ function Trend({activatedEle}) {
         }
       
         sum += 0.5;
-      
-        return sum;
+        return sum * 100;
       }
 
     const changeAspect = (e) => {
         if (e === 'physical') {
             //const newPhysical = {x: dates.x, y: Object.values(physical.z_physical)}
-            const newOthersPhysical = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+            const newOthersPhysical = {x: dates.x, y: [50, 50, 50, 50, 50, 50, 50]}
 
             const newPhysicalElements = Object.keys(activatedEle.physical).filter(v => activatedEle['physical'][v])
             var physical_plot = []
             var physical_final_plot = [0, 0, 0, 0, 0, 0, 0]
             for (var i in newPhysicalElements) {
-                var percentage = getPercentFromZ(Object.values(physical['z_'+newPhysicalElements[i]]))
+                var percentage = []
+                Object.values(physical['z_'+newPhysicalElements[i]]).map(z => percentage.push(getPercentFromZ(z)))
                 physical_plot.push(percentage)
             }
             var physical_numelements = newPhysicalElements.length
@@ -183,13 +184,15 @@ function Trend({activatedEle}) {
         
         if (e === 'mental') {
             //const newMental = {x: dates.x, y: Object.values(mental.z_mental)}
-            const newOthersMental = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+            const newOthersMental = {x: dates.x, y: [50, 50, 50, 50, 50, 50, 50]}
 
             const newMentalElements = Object.keys(activatedEle.mental).filter(v => activatedEle['mental'][v])
             var mental_plot = []
             var mental_final_plot = [0, 0, 0, 0, 0, 0, 0]
             for (var i in newMentalElements) {
-                mental_plot.push(Object.values(mental['z_'+newMentalElements[i]]))
+                var percentage = []
+                Object.values(mental['z_'+newMentalElements[i]]).map(z => percentage.push(getPercentFromZ(z)))
+                mental_plot.push(percentage)
             }
             var mental_numelements = newMentalElements.length
             for (var j in mental_plot) {
@@ -206,13 +209,15 @@ function Trend({activatedEle}) {
 
         if (e === 'social') {
             //const newSocial = {x: dates.x, y: Object.values(social.z_social)}
-            const newOthersSocial = {x: dates.x, y: [0, 0, 0, 0, 0, 0, 0]}
+            const newOthersSocial = {x: dates.x, y: [50, 50, 50, 50, 50, 50, 50]}
 
             const newSocialElements = Object.keys(activatedEle.social).filter(v => activatedEle['social'][v])
             var social_plot = []
             var social_final_plot = [0, 0, 0, 0, 0, 0, 0]
             for (var i in newSocialElements) {
-                social_plot.push(Object.values(social['z_'+newSocialElements[i].toLowerCase()]))
+                var percentage = []
+                Object.values(social['z_'+newSocialElements[i].toLowerCase()]).map(z => percentage.push(getPercentFromZ(z)))
+                social_plot.push(percentage)
             }
             var social_numelements = newSocialElements.length
             for (var j in social_plot) {
@@ -269,7 +274,7 @@ function Trend({activatedEle}) {
                             width: 1000, 
                             height: 500, 
                             title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health [" + numMetric[selectedAspect].map(v => titleMap[v]) + "]", 
-                            yaxis: {range: [-4, 4], title: 'z-score'}
+                            yaxis: {range: [0, 100], title: 'z-score'}
                         }}
                     />
                 </Box>
