@@ -128,6 +128,34 @@ function Trend({activatedEle}) {
         setSelectedAspect(e)
     }
 
+    const getPercentFromZ = (z) => {
+      
+        if (z < -6.5) {
+          return 0.0;
+        }
+      
+        if (z > 6.5) {
+          return 1.0;
+        }
+      
+        var factK = 1;
+        var sum = 0;
+        var term = 1;
+        var k = 0;
+        var loopStop = Math.exp(-23);
+      
+        while(Math.abs(term) > loopStop) {
+          term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
+          sum += term;
+          k++;
+          factK *= k;
+        }
+      
+        sum += 0.5;
+      
+        return sum;
+      }
+
     const changeAspect = (e) => {
         if (e === 'physical') {
             //const newPhysical = {x: dates.x, y: Object.values(physical.z_physical)}
@@ -137,7 +165,8 @@ function Trend({activatedEle}) {
             var physical_plot = []
             var physical_final_plot = [0, 0, 0, 0, 0, 0, 0]
             for (var i in newPhysicalElements) {
-                physical_plot.push(Object.values(physical['z_'+newPhysicalElements[i]]))
+                var percentage = getPercentFromZ(Object.values(physical['z_'+newPhysicalElements[i]]))
+                physical_plot.push(percentage)
             }
             var physical_numelements = newPhysicalElements.length
             for (var j in physical_plot) {
