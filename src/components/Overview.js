@@ -2,8 +2,8 @@ import React, {useRef, useState, useEffect} from 'react';
 import './Pages.css';
 import GoalCard from './GoalCard.js'
 // import * as d3 from "d3";
-import { Grid, Box } from '@mui/material'
-import { Button, Popup, Icon } from 'semantic-ui-react'
+//import { Grid, Box } from '@mui/material'
+import { Button, Popup, Icon, Grid } from 'semantic-ui-react'
 // import { ReactRadarChart } from 'd3-radarchart';
 
 import createPlotlyComponent from 'react-plotly.js/factory';
@@ -167,7 +167,7 @@ function Overview({activatedEle, initialGoals}) {
         })
         z_social_total =  z_social_total / social_temp.length;
         console.log("z_social total: ", z_social_total);
-        changeUserZValue([z_social_total, z_physical_total, z_mental_total]);
+        changeUserZValue([z_physical_total, z_mental_total, z_social_total]);
         
         // const mental_metric_value = []
         // const physical_metric_value = []
@@ -188,19 +188,19 @@ function Overview({activatedEle, initialGoals}) {
         // social_temp.forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
 
         // update text
-        const mental_text = zValues_mental.map((zValues_mental, i) => {
-        // console.log(zValues_mental, i)
-            return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0]}<br> Other's Value: ${zValues_mental[1]} `
-        })
-
         const physical_text = zValues_physical.map((zValues_physical, i) => {
             // console.log(zValues_mental, i)
-            return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0]}<br> Other's Value: ${zValues_physical[1]} `
+            return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0].toFixed(2)}<br> Other's Value: ${zValues_physical[1].toFixed(2)} `
+        })
+
+        const mental_text = zValues_mental.map((zValues_mental, i) => {
+        // console.log(zValues_mental, i)
+            return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0].toFixed(2)}<br> Other's Value: ${zValues_mental[1].toFixed(2)} `
         })
 
         const social_text = zValues_social.map((zValues_social, i) => {
             // console.log(zValues_mental, i)
-            return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0]}<br> Other's Value: ${zValues_social[1]} `
+            return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0].toFixed(2)}<br> Other's Value: ${zValues_social[1].toFixed(2)} `
         })
         changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
 
@@ -219,12 +219,12 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'lines+markers+text',
-            r: [0, 0, 0],
-            theta: ['Social', 'Physical', 'Mental'],
+            r: user_z_value.map(w => w*250),
+            theta: ['Physical', 'Mental', 'Social'],
             fill: 'toself',
-            name: 'Other Users',
+            name: 'You',
             line: {
-                color: 'gray'
+                color: '#f88923'
             },
             hovertemplate:
                 "Value: %{r} <br>" +
@@ -234,26 +234,28 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'lines+markers+text',
-            r: user_z_value.map(w => w*250),
-            theta: ['Social', 'Physical', 'Mental'],
+            r: [0, 0, 0],
+            theta: ['Physical', 'Mental', 'Social'],
             fill: 'toself',
-            name: 'You',
+            name: "Other Users' Average",
             line: {
-                color: '#F88923'
+                color: '#aaa'
             },
             hovertemplate:
                 "Value: %{r} <br>" +
                 "Category: %{theta}" +
                 "<extra></extra>"
         },
+        
         {
             type: 'scatterpolar',
             mode: 'markers',
-            r: [goals['social'], goals['physical'], goals['mental']],
-            theta: ['Social', 'Physical', 'Mental'],
+            r: [goals['physical'], goals['mental'], goals['social']],
+            theta: ['Physical', 'Mental', 'Social'],
             marker: {
-                symbol: "square",
-                color: 'black',
+                symbol: 'x',
+                color: '#ff7043',
+                size: 13
             },
             fill: null,
             name: 'Goal',
@@ -270,11 +272,12 @@ function Overview({activatedEle, initialGoals}) {
               visible: true,
               range: [-100, 100], // 0부터 시작해서 200까지 나타내게!
               color: '#777',
+              showticklabels: true
             },
             angularaxis: {
                 // gridcolor: 'red',    
                 rotation: 210,
-                color: '#777',
+                color: 'black',
             },
         },
     }
@@ -342,9 +345,10 @@ function Overview({activatedEle, initialGoals}) {
     return (
         <div>
             <h2>Overview Page</h2>
-            <div className="panels">
-                <Grid container alignItems="center" justifyContent="space-between" spacing={1} >
-                    <Grid item style={{border: '0px solid black'}}>
+            <div className="panels2">
+                <Grid divided='vertically'>
+                    <Grid.Row columns='equal'>
+                    <Grid.Column width={11}>
                     <h4 className="panel-title">
                         <span>HEALTH TRIANGLE </span>
                         <span style={{width: '2px'}}></span>
@@ -355,26 +359,28 @@ function Overview({activatedEle, initialGoals}) {
                             data={scatterData}
                             layout={scatterLayout}
                         />
-                    </Grid>
-                    <Grid item style={{border: '0px solid black'}}>
+                    </Grid.Column>
+                    <Grid.Column>
                         <h4 className="panel-title">
                             <span>CURRENT GOALS </span>
                             <span style={{width: '2px'}}></span>
                             <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
-                        <div style={{width: '500px', height: '550px', paddingTop: '0.5em'}}>
-                            <GoalCard health="Mental" percent={goals['mental'].toString()} metric={metric['mental']} />
-                            <GoalCard health="Physical" percent={goals['physical'].toString()}metric={metric['physical']} />
-                            <GoalCard health="Social" percent={goals['social'].toString()} metric={metric['social']} />
+                        <div style={{width: '', paddingTop: '0.5em'}}>
+                            <GoalCard health="Mental" percent={goals['mental'].toString()+'%'} metric={metric['mental']} />
+                            <GoalCard health="Physical" percent={goals['physical'].toString()+'%'}metric={metric['physical']} />
+                            <GoalCard health="Social" percent={goals['social'].toString()+'%'} metric={metric['social']} />
                         </div>
-                    </Grid>
-                    <Grid item style={{border: '0px solid black', height: '40%'}}>
+                    </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={1}>
+                    <Grid.Column>
                         <h4 className="panel-title">
                             <span style={{marginBottom: '1em'}}>ASPECT PERCENTAGE </span>
                             <span style={{width: '2px'}}></span>
-                            <Popup content="This panel is where bar graphs were used to where my data for each element is in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                            <Popup content="The bar graphs shows *where my data for each element is* in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
-                        <Button.Group variant="outlined" aria-label="outlined primary button group" size='tiny'>
+                        <Button.Group variant="outlined" aria-label="outlined primary button group" size='tiny' style={{marginTop: '10px'}}>
                             <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
                             <Button color={selectedAspect === 'mental'? 'twitter': ''} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
                             <Button color={selectedAspect === 'social'? 'twitter': ''} onClick={() => handleClickAspect('social')}>Social Health</Button>
@@ -384,7 +390,8 @@ function Overview({activatedEle, initialGoals}) {
                             data={barChartData}
                             layout={barLayout}
                         />
-                    </Grid>
+                    </Grid.Column>
+                    </Grid.Row>
                 </Grid>
                 
             </div>
