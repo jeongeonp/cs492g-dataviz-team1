@@ -27,7 +27,6 @@ function Overview({activatedEle, initialGoals}) {
     const mental_data = require('../assets/mental_agg_week.json');
     const social_data = require('../assets/social_agg_week.json');
 
-    console.log("raw data", physical_data, mental_data, social_data)
 
     // Const over here
     const [highlighted, setHighlighted] = useState(null);
@@ -37,7 +36,6 @@ function Overview({activatedEle, initialGoals}) {
     const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
     const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
 
-    console.log(physical_values, mental_values, social_values)
     // const zValues_mental_data = {
     //     'Overall': [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
     //     'Stress': [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
@@ -116,7 +114,6 @@ function Overview({activatedEle, initialGoals}) {
 
     // edit mode
     useEffect(() => {
-        // console.log("keeps changing")
         var physical_temp = ['Overall'];
         var social_temp = ['Overall'];
         var mental_temp = ['Overall'];
@@ -154,9 +151,7 @@ function Overview({activatedEle, initialGoals}) {
 
         changeMetrics(state => ({...state, physical: physical_temp, mental: mental_temp, social: social_temp}))
 
-        // console.log("social_temp", social_temp);
-        // console.log("mental_temp", mental_temp);
-        // console.log("physical_temp", physical_temp)
+
         // changePhysicalMetric(state => ({...state, physical_temp}));
         // changeMentalMetric(mental_temp);
         // changeSocialMetric(social_temp);
@@ -170,13 +165,12 @@ function Overview({activatedEle, initialGoals}) {
         var z_mental_total = 0;
         mental_temp.map((item) => {
             if (item !== "Overall") {
-                // console.log("z_" + metric.toString())
                 const key = "z_" + item.toString()
                 z_mental_total += mental_data[key]['0']
             }
         })
         z_mental_total =  z_mental_total / mental_temp.length;
-        console.log("z_mental total: ", z_mental_total);
+        //console.log("z_mental total: ", z_mental_total);
 
         var z_physical_total = 0;
         physical_temp.map((item) => {
@@ -187,7 +181,7 @@ function Overview({activatedEle, initialGoals}) {
             }
         })
         z_physical_total =  z_physical_total / physical_temp.length;
-        console.log("z_physical total: ", z_physical_total);
+        //console.log("z_physical total: ", z_physical_total);
 
         var z_social_total = 0;
         social_temp.map((item) => {
@@ -198,7 +192,7 @@ function Overview({activatedEle, initialGoals}) {
             }
         })
         z_social_total =  z_social_total / social_temp.length;
-        console.log("z_social total: ", z_social_total);
+        //console.log("z_social total: ", z_social_total);
         changeUserZValue([z_physical_total, z_mental_total, z_social_total]);
         
         // const mental_metric_value = []
@@ -212,8 +206,6 @@ function Overview({activatedEle, initialGoals}) {
         const mental_temp_values = mental_temp.map(x => mental_values[x]);
         const physical_temp_values = physical_temp.map(x => physical_values[x]);
         const social_temp_values = social_temp.map(x => social_values[x]);
-        console.log(mental_temp, mental_temp_values)
-        console.log(physical_temp, physical_temp_values)
         updateMetricValues(state => ({...state, physical: physical_temp_values, mental: mental_temp_values, social: social_temp_values}))
         
 
@@ -235,7 +227,6 @@ function Overview({activatedEle, initialGoals}) {
         })
         
         changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
-        console.log(physical_text, mental_text, social_text, "TEXT")
     }, [activatedEle])
 
     // changing goals
@@ -245,7 +236,6 @@ function Overview({activatedEle, initialGoals}) {
     }, [goalsString])
 
     const getPercentFromZ = (z) => {
-        console.log(z)
       
         if (z < -6.5) {
           return 0.0;
@@ -394,11 +384,8 @@ function Overview({activatedEle, initialGoals}) {
             title: "Chosen Metric",
         }
     }
-    console.log(metric[selectedAspect].reverse())
-    console.log(metric_values[selectedAspect])
-    console.log(metric_values[selectedAspect].map(v => getPercentFromZ(v)))
-
-    console.log("!!!!!!!!!!!!!!!!!!!!!!", metric[selectedAspect], metric_values[selectedAspect])
+    
+    
     const hover = (hovered) => {
         if (hovered === null && highlighted === null) {
             return;
