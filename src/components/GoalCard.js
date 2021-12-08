@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Icon } from 'semantic-ui-react'
 
+/*
 const bull = (
   <Box
     component="span"
@@ -15,15 +16,15 @@ const bull = (
     •
   </Box>
 );
-
+*/
 export default function BasicCard(props) {
     const health = props.health;
     const percent = props.percent;
-    const metric = props.metric.filter(word => word != 'Overall').toString();
+    const metric = props.metric.filter(word => word !== 'Overall').toString();
     // const metric = props.metric.toString();
 
     var icon = <Icon  style={{ margin: 0}} name='heart' />
-    if (health == "Physical") {
+    if (health === "Physical") {
         icon = <Icon style={{ margin: 0}} name='bicycle' />
     }
     else if (health === 'Social') {

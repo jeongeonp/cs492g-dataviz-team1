@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Button, Header, Form, Modal, Input, Icon } from 'semantic-ui-react'
+import { Button, Modal, Icon } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';

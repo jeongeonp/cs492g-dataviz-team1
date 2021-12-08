@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import './App.css';
 import Overview from './components/Overview';
@@ -7,11 +7,9 @@ import Activities from './components/Activities-lib';
 import EditModal from './components/EditModal';
 import HelpModal from './components/HelpModal';
 
-import { Box, Tab, Tabs } from '@mui/material'
+import { Box, Tab } from '@mui/material'
 import { TabContext, TabList, TabPanel} from '@mui/lab'
 import { Grid,Image } from 'semantic-ui-react'
-
-import { purple, deepPurple } from '@mui/material/colors';
 
 import ChangeHistoryIcon from '@mui/icons-material/ChangeHistory';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -49,11 +47,11 @@ function App() {
   const [goals, setGoals] = useState(initialGoals)
   const [activatedEle, setActivatedEle] = useState(initialActivatedEle);
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
-  const tabcolor = deepPurple[800]
+  //const tabcolor = deepPurple[800]
 
   return (
     <div >

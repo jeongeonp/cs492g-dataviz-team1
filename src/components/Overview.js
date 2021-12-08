@@ -1,9 +1,9 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Pages.css';
 import GoalCard from './GoalCard.js'
 // import * as d3 from "d3";
 //import { Grid, Box } from '@mui/material'
-import { Button, Popup, Icon, Grid } from 'semantic-ui-react'
+import { Button, Popup, Icon, Grid, Divider } from 'semantic-ui-react'
 // import { ReactRadarChart } from 'd3-radarchart';
 
 import createPlotlyComponent from 'react-plotly.js/factory';
@@ -13,7 +13,7 @@ import Plotly from 'plotly.js';
 const Plot = createPlotlyComponent(Plotly);
 
 function Overview({activatedEle, initialGoals}) {
-    const [metric, changeMetrics] = useState({mental:[], physical: [], social: []});
+    const [metric, changeMetrics] = useState({physical: [], social: [], mental: []});
     const [user_z_value, changeUserZValue] = useState([0, 0, 0]);
     const [metric_values, updateMetricValues] = useState({physical: [], social: [], mental: []})
     const [allText, changeAllText] = useState({physical: [], social:[], mental: []})
@@ -23,18 +23,21 @@ function Overview({activatedEle, initialGoals}) {
     const goalsString = JSON.stringify(initialGoals);
 
     // aggregated data
-    const mental_data = require('../assets/mental_agg_week.json');
     const physical_data = require('../assets/physical_agg_week.json');
+    const mental_data = require('../assets/mental_agg_week.json');
     const social_data = require('../assets/social_agg_week.json');
+
+    console.log("raw data", physical_data, mental_data, social_data)
 
     // Const over here
     const [highlighted, setHighlighted] = useState(null);
 
     // data values
-    const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
     const physical_values = {'Overall': physical_data['z_physical']['0'], 'Calories': physical_data['z_Calories']['0'], 'Pedometer': physical_data['z_Pedometer']['0']}
+    const mental_values = {'Overall': mental_data['z_mental']['0'], 'Valence': mental_data['z_Valence']['0'], 'Arousal': mental_data['z_Arousal']['0'], 'Attention': mental_data['z_Attention']['0'], 'Stress': mental_data['z_Stress']['0']}
     const social_values = {'Overall': social_data['z_social']['0'], 'CallLog': social_data['z_calllog']['0'], 'MessageLog': social_data['z_messagelog']['0'], 'SNSLog': social_data['z_snslog']['0'], 'SNSProp': social_data['z_snsprop']['0']}
 
+    console.log(physical_values, mental_values, social_values)
     // const zValues_mental_data = {
     //     'Overall': [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
     //     'Stress': [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
@@ -57,28 +60,59 @@ function Overview({activatedEle, initialGoals}) {
     //     "SNSProp": [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
     // }
 
+    
+    const zValues_mental = {
+        'Stress': [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
+        'Valence': [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
+        'Arousal': [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
+        'Attention': [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']],
+        'Overall': [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
+    }
+
+    const zValues_physical = {
+        'Calories': [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
+        'Pedometer': [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']],
+        'Overall': [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
+    }
+
+    const zValues_social = {
+        'CallLog': [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
+        'MessageLog': [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
+        'PhoneLog': [social_data['p3012_phonelog']['0'], social_data['others_phonelog']['0']],
+        'SNSLog': [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
+        'SNSProp': [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
+        'Overall': [social_data['z_social']['0'], social_data['z_social']['0']], 
+    }
+    
+
+
+    /*
     const zValues_mental = [
         [mental_data['z_mental']['0'], mental_data['others_mental_mean']['0']], 
         [mental_data['p3012_Stress']['0'], mental_data['others_Stress']['0']],
         [mental_data['p3012_Valence']['0'], mental_data['others_Valence']['0']],
         [mental_data['p3012_Arousal']['0'], mental_data['others_Arousal']['0']],
-        [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']]
+        [mental_data['p3012_Attention']['0'], mental_data['others_Attention']['0']],
+        
     ]
 
     const zValues_physical = [
-        [physical_data['z_physical']['0'], physical_data['z_physical']['0']], 
+        [physical_data['z_physical']['0'], physical_data['z_physical']['0']],
         [physical_data['p3012_Calories']['0'], physical_data['others_Calories']['0']],
         [physical_data['p3012_Pedometer']['0'], physical_data['others_Pedometer']['0']],
+         
     ]
 
     const zValues_social = [
-        [social_data['z_social']['0'], social_data['z_social']['0']], 
+        [social_data['z_social']['0'], social_data['z_social']['0']],
         [social_data['p3012_calllog']['0'], social_data['others_calllog']['0']],
         [social_data['p3012_messagelog']['0'], social_data['others_messagelog']['0']],
-        [social_data['p3012_phonelog']['0'], social_data['others_phonelog']['0']],
-        [social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
+        //[social_data['p3012_phonelog']['0'], social_data['others_phonelog']['0']],
+        //[social_data['p3012_snslog']['0'], social_data['others_snslog']['0']],
         [social_data['p3012_snsprop']['0'], social_data['others_snsprop']['0']],
+         
     ]
+    */
 
     // edit mode
     useEffect(() => {
@@ -87,7 +121,7 @@ function Overview({activatedEle, initialGoals}) {
         var social_temp = ['Overall'];
         var mental_temp = ['Overall'];
         Object.entries(activatedEle).forEach(([key, value]) => {
-            if (key == "physical") {
+            if (key === "physical") {
                 Object.entries(activatedEle["physical"]).forEach(([key, value]) => {
                     if (value) {
                         physical_temp.push(key);
@@ -95,7 +129,7 @@ function Overview({activatedEle, initialGoals}) {
                     }
                 })
             }
-            else if (key == "mental") {
+            else if (key === "mental") {
                 Object.entries(activatedEle["mental"]).forEach(([key, value]) => {
                     if (value) {
                         mental_temp.push(key);
@@ -103,7 +137,7 @@ function Overview({activatedEle, initialGoals}) {
                     }
                 })
             }
-            else if (key == "social") {
+            else if (key === "social") {
                 Object.entries(activatedEle["social"]).forEach(([key, value]) => {
                     if (value) {
                         social_temp.push(key);
@@ -135,7 +169,7 @@ function Overview({activatedEle, initialGoals}) {
         // Recalculate z-value
         var z_mental_total = 0;
         mental_temp.map((item) => {
-            if (item != "Overall") {
+            if (item !== "Overall") {
                 // console.log("z_" + metric.toString())
                 const key = "z_" + item.toString()
                 z_mental_total += mental_data[key]['0']
@@ -146,7 +180,7 @@ function Overview({activatedEle, initialGoals}) {
 
         var z_physical_total = 0;
         physical_temp.map((item) => {
-            if (item != "Overall") {
+            if (item !== "Overall") {
                 // console.log("z_" + metric.toString())
                 const key = "z_" + item.toString()
                 z_physical_total += physical_data[key]['0']
@@ -157,7 +191,7 @@ function Overview({activatedEle, initialGoals}) {
 
         var z_social_total = 0;
         social_temp.map((item) => {
-            if (item != "Overall") {
+            if (item !== "Overall") {
                 // console.log("z_" + metric.toString())
                 const key = "z_" + item.toString().toLowerCase();
                 z_social_total += social_data[key]['0']
@@ -178,30 +212,30 @@ function Overview({activatedEle, initialGoals}) {
         const mental_temp_values = mental_temp.map(x => mental_values[x]);
         const physical_temp_values = physical_temp.map(x => physical_values[x]);
         const social_temp_values = social_temp.map(x => social_values[x]);
+        console.log(mental_temp, mental_temp_values)
+        console.log(physical_temp, physical_temp_values)
         updateMetricValues(state => ({...state, physical: physical_temp_values, mental: mental_temp_values, social: social_temp_values}))
-
+        
 
         // mental_temp.forEach((x, i) => changeMentalMetricValue([...mental_metric_value, mental_values[x]]));
         // physical_temp.forEach((x, i) => changePhysicalMetricValue([...physical_metric_value, physical_values[x]]));
         // social_temp.forEach((x, i) => changeSocialMetricValue([...social_metric_value, social_values[x]]));
 
         // update text
-        const physical_text = zValues_physical.map((zValues_physical, i) => {
-            // console.log(zValues_mental, i)
-            return `<b>${physical_temp[i]}</b> <br>Your Value: ${zValues_physical[0].toFixed(2)}<br> Other's Value: ${zValues_physical[1].toFixed(2)} `
+        const physical_text = physical_temp.map(x => {
+            return `<b>${x}</b> <br>Your Value: ${zValues_physical[x][0].toFixed(3)}<br>Other's Value: ${zValues_physical[x][1].toFixed(3)} `
         })
 
-        const mental_text = zValues_mental.map((zValues_mental, i) => {
-        // console.log(zValues_mental, i)
-            return `<b>${mental_temp[i]}</b> <br>Your Value: ${zValues_mental[0].toFixed(2)}<br> Other's Value: ${zValues_mental[1].toFixed(2)} `
+        const mental_text = mental_temp.map(x => {
+            return `<b>${x}</b> <br>Your Value: ${zValues_mental[x][0].toFixed(3)}<br>Other's Value: ${zValues_mental[x][1].toFixed(3)} `
         })
 
-        const social_text = zValues_social.map((zValues_social, i) => {
-            // console.log(zValues_mental, i)
-            return `<b>${social_temp[i]}</b> <br>Your Value: ${zValues_social[0].toFixed(2)}<br> Other's Value: ${zValues_social[1].toFixed(2)} `
+        const social_text = social_temp.map(x => {
+            return `<b>${x}</b> <br>Your Value: ${zValues_social[x][0].toFixed(3)}<br>Other's Value: ${zValues_social[x][1].toFixed(3)} `
         })
+        
         changeAllText(state => ({...state, physical: physical_text, mental: mental_text, social: social_text}))
-
+        console.log(physical_text, mental_text, social_text, "TEXT")
     }, [activatedEle])
 
     // changing goals
@@ -236,8 +270,7 @@ function Overview({activatedEle, initialGoals}) {
       
         sum += 0.5;
         return sum * 100;
-      }
-
+    }
 
     // Polar Chart
     const scatterData = [
@@ -308,11 +341,12 @@ function Overview({activatedEle, initialGoals}) {
     }
 
     // Bar Data
+    //console.log(metric_values, metric, zValues_mental, allText)
     const barChartData = [{
         type: 'bar',
-        x: metric_values[selectedAspect],
+        x: metric_values[selectedAspect].map(v => getPercentFromZ(v)-50),
         y: metric[selectedAspect],
-        z: zValues_mental,
+        //z: zValues_social,
         text: allText[selectedAspect],
         textposition: "none",
         orientation: 'h',
@@ -322,11 +356,21 @@ function Overview({activatedEle, initialGoals}) {
             })
         },
         hovertemplate: "%{text}",
-      }];
+        name: 'Element Percentile',
+      },
+      /*
+      {
+          x: metric_values[selectedAspect].map(v => 0),
+          y: metric[selectedAspect],
+          type: 'scatter',
+          mode: 'lines',
+      }
+      */
+    ];
 
     const barLayout = {
         autosize: false,
-        width: 1100,
+        width: 1000,
         height: 400,
         margin: {
             l: 150,
@@ -336,19 +380,25 @@ function Overview({activatedEle, initialGoals}) {
             pad: 4
         },
         xaxis: {
-            range: [-1, 1],
-            title: "Percentage Compared to Others",
+            range: [-50, 50],
+            title: "Percentile",
             zeroline: false,
-            tickformat: ",.0%",
+            //tickformat: ",.0th",
+            tickmode: "array", // If "array", the placement of the ticks is set via `tickvals` and the tick text is `ticktext`.
+            tickvals: [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50],
+            ticktext: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         },
         yaxis: {
-            title: "Chosen Metric",
-            zeroline: false,
+            categoryorder: "array",
             categoryarray: metric[selectedAspect],
-            categoryorder: "array"
+            title: "Chosen Metric",
         }
     }
+    console.log(metric[selectedAspect].reverse())
+    console.log(metric_values[selectedAspect])
+    console.log(metric_values[selectedAspect].map(v => getPercentFromZ(v)))
 
+    console.log("!!!!!!!!!!!!!!!!!!!!!!", metric[selectedAspect], metric_values[selectedAspect])
     const hover = (hovered) => {
         if (hovered === null && highlighted === null) {
             return;
@@ -369,7 +419,7 @@ function Overview({activatedEle, initialGoals}) {
         <div>
             <h2>Overview Page</h2>
             <div className="panels2">
-                <Grid divided='vertically'>
+                <Grid>
                     <Grid.Row columns='equal'>
                     <Grid.Column width={11}>
                     <h4 className="panel-title">
@@ -396,6 +446,7 @@ function Overview({activatedEle, initialGoals}) {
                         </div>
                     </Grid.Column>
                     </Grid.Row>
+                    <Divider/>
                     <Grid.Row columns={1}>
                     <Grid.Column>
                         <h4 className="panel-title">
@@ -404,11 +455,14 @@ function Overview({activatedEle, initialGoals}) {
                             <Popup content="The bar graphs shows *where my data for each element is* in comparison to other peoples' average data." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <Button.Group variant="outlined" aria-label="outlined primary button group" size='tiny' style={{marginTop: '10px'}}>
-                            <Button color={selectedAspect === 'physical'? 'twitter': ''} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
-                            <Button color={selectedAspect === 'mental'? 'twitter': ''} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
-                            <Button color={selectedAspect === 'social'? 'twitter': ''} onClick={() => handleClickAspect('social')}>Social Health</Button>
+                            <Button color={selectedAspect === 'physical'? 'twitter': 'standard'} onClick={() => handleClickAspect('physical')}>Physical Health</Button>
+                            <Button color={selectedAspect === 'mental'? 'twitter': 'standard'} onClick={() => handleClickAspect('mental')}>Mental Health</Button>
+                            <Button color={selectedAspect === 'social'? 'twitter': 'standard'} onClick={() => handleClickAspect('social')}>Social Health</Button>
                         </Button.Group>
-                        {/* <h2 style={{margin: '0'}}>Physical</h2> */}
+                    </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={1}>
+                    <Grid.Column>
                         <Plot
                             data={barChartData}
                             layout={barLayout}
