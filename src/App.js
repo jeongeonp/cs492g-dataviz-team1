@@ -7,7 +7,7 @@ import Activities from './components/Activities-lib';
 import EditModal from './components/EditModal';
 import HelpModal from './components/HelpModal';
 
-import { Box, Tab } from '@mui/material'
+import { Box, Tab, Tabs } from '@mui/material'
 import { TabContext, TabList, TabPanel} from '@mui/lab'
 import { Grid,Image } from 'semantic-ui-react'
 
@@ -47,7 +47,7 @@ function App() {
   const [goals, setGoals] = useState(initialGoals)
   const [activatedEle, setActivatedEle] = useState(initialActivatedEle);
 
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -78,7 +78,7 @@ function App() {
                 aria-label="lab API tabs example" 
                 //TabIndicatorProps={{style: {background:'#5a49e4', color: '#5a49e4'}}}
               >
-                <Tab icon={<ChangeHistoryIcon style={{color: "#"}}/>} iconPosition="start" label={<span style={{ color: '#' }}>Overview</span>} value="1" />
+                <Tab icon={<ChangeHistoryIcon />} iconPosition="start" label={<span style={{ color: '#' }}>Overview</span>} value="1" />
                 <Tab icon={<TrendingUpIcon />} iconPosition="start" label="Trend" value="2" />
                 <Tab icon={<LocalActivityIcon />} iconPosition="start" label="Activity Management" value="3" />
               </TabList>
