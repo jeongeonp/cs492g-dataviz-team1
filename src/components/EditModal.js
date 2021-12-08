@@ -124,8 +124,8 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
           <span style={{color: 'black'}}>CHECKBOXES:</span> In the beginning, all elements are included in the calculation of your health. <br/>
           Please add or remove elements for tracking with checkboxes. Make sure at least 1 element is included for each health aspect. <br/>
           <br/>
-          <span style={{color: 'black'}}>GOALS:</span> The initial values for the goals are set to 0. You can change the value between -100 and 100. <br/>
-          Since the values are calculated from z-scores, we highly recommend that you <b>set the values between -25 and 25</b>. <br/>
+          <span style={{color: 'black'}}>GOALS:</span> The initial values for the goals are set to 50th percentile (median). Set your goal between 0th and 100th percentile. <br/>
+          
           </div>
 
           <Grid columns={3} divided>
@@ -151,18 +151,19 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             {!physicalEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
           </div>
           <Input
-            style={{width: '100px'}} 
-            placeholder='-100 ~ 100'
+            style={{width: '70px'}} 
+            placeholder='0~100'
             labelPosition='right'
             value={physicalGoal}
             onChange={(e) => setPhysicalGoal(e.target.value)}
+            size="small"
           >
             <Label color="blue"><Icon name='flag checkered'></Icon>Goal</Label>
             <input/>
-            <Label basic>%</Label>
+            <Label basic >th percentile</Label>
           </Input>
           <br/>
-          {!physicalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
+          {!physicalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between 0 to 100</span>}
           </Grid.Column>
 
 
@@ -202,18 +203,19 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             {!mentalEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
           </div>
           <Input 
-            style={{width: '100px'}}  
-            placeholder='-100 ~ 100'
+            style={{width: '70px'}}  
+            placeholder='0~100'
             labelPosition='right'
             value={mentalGoal}
             onChange={(e) => setMentalGoal(e.target.value)}
+            size="small"
           >
             <Label color="blue"><Icon name='flag checkered'></Icon>Goal</Label>
             <input/>
-            <Label basic>%</Label>
+            <Label basic >th percentile</Label>
           </Input>
           <br/>
-          {!mentalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
+          {!mentalGoalValid && <span style={{color: 'red'}}>Goal should be in the range between 0 to 100</span>}
           </Grid.Column>
 
 
@@ -246,18 +248,19 @@ function EditModal ({ activatedEle, changeEle, goals, changeGoals }) {
             {!socialEleValid && <span style={{color: 'red'}}>You should select at least 1 element in each aspect</span>}
           </div>
           <Input 
-            style={{width: '100px', marginBottom: '0'}} 
-            placeholder='-100 ~ 100'
+            style={{width: '70px'}} 
+            placeholder='0~100'
             labelPosition='right'
             value={socialGoal}
             onChange={(e) => setSocialGoal(e.target.value)}
+            size="small"
           >
             <Label color="blue"><Icon name='flag checkered'></Icon>Goal</Label>
             <input/>
-            <Label basic>%</Label>
+            <Label basic>th percentile</Label>
           </Input>
           <br/>
-          {!socialGoalValid && <span style={{color: 'red'}}>Goal should be in the range between -100 to 100</span>}
+          {!socialGoalValid && <span style={{color: 'red'}}>Goal should be in the range between 0 to 100</span>}
           </Grid.Column>
           </Grid.Row>
           </Grid>

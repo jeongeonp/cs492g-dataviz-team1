@@ -244,15 +244,15 @@ function Overview({activatedEle, initialGoals}) {
         {
             type: 'scatterpolar',
             mode: 'lines+markers+text',
-            r: user_z_value.map(w => getPercentFromZ(w)),
+            r: user_z_value.map(w => getPercentFromZ(w).toFixed(2)),
             theta: ['Physical', 'Mental', 'Social'],
             fill: 'toself',
-            name: 'You',
+            name: 'You (in percentile)',
             line: {
                 color: '#f88923'
             },
             hovertemplate:
-                "Value: %{r} <br>" +
+                "Value: %{r}th percentile <br>" +
                 "Category: %{theta}" +
                 "<extra></extra>"
         },
@@ -267,7 +267,7 @@ function Overview({activatedEle, initialGoals}) {
                 color: '#aaa'
             },
             hovertemplate:
-                "Value: %{r} <br>" +
+                "Value: %{r}th percentile<br>" +
                 "Category: %{theta}" +
                 "<extra></extra>"
         },
@@ -285,7 +285,7 @@ function Overview({activatedEle, initialGoals}) {
             fill: null,
             name: 'Goal',
             hovertemplate:
-                "Value: %{r} <br>" +
+                "Set Goal: %{r}th percentile <br>" +
                 "Category: %{theta}" +
                 "<extra></extra>"
         }
@@ -375,7 +375,7 @@ function Overview({activatedEle, initialGoals}) {
                     <h4 className="panel-title">
                         <span>HEALTH TRIANGLE </span>
                         <span style={{width: '2px'}}></span>
-                        <Popup content="This panel is to show the overview of each of the health aspects, which are calculated by taking the average of your weekly data and comparing with others' average to get the z-scores. Afterwards, the z-scores were converted to a scale of -100 to 100 for easier understanding." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                        <Popup content="This panel is to show the overview of each health aspects, calculated by taking the average of your weekly data and comparing with others' average." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                     </h4>
                         <p className="panel-date">May 2019, Week 1 (April 30th - May 6th)</p>
                         <Plot
@@ -390,9 +390,9 @@ function Overview({activatedEle, initialGoals}) {
                             <Popup content="Here, the goals you set in the edit mode as well as the elements you selected for each health aspect is displayed." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
                         </h4>
                         <div style={{width: '', paddingTop: '0.5em'}}>
-                            <GoalCard health="Mental" percent={goals['mental'].toString()+'th percentile'} metric={metric['mental']} />
-                            <GoalCard health="Physical" percent={goals['physical'].toString()+'th percentile'}metric={metric['physical']} />
-                            <GoalCard health="Social" percent={goals['social'].toString()+'th percentile'} metric={metric['social']} />
+                            <GoalCard health="Physical" percent={goals['physical'].toString()}metric={metric['physical']} />
+                            <GoalCard health="Mental" percent={goals['mental'].toString()} metric={metric['mental']} />
+                            <GoalCard health="Social" percent={goals['social'].toString()} metric={metric['social']} />
                         </div>
                     </Grid.Column>
                     </Grid.Row>

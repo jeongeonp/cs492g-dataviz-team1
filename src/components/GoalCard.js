@@ -45,13 +45,13 @@ export default function BasicCard(props) {
                             { health }
                         </Typography>
                         <Typography variant="h5" component="div">
-                            { percent }
+                            <span style={{color: '#333'}}><b style={{fontSize: '110%'}}>{ percent }</b>th percentile</span>
                         </Typography>
                         {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">
                         adjective
                         </Typography> */}
                         <Typography variant="body2" color="text.secondary">
-                            { metric }
+                            { metric.replaceAll(',', ', ') }
                         </Typography>
                     </Box>
                 </Box>

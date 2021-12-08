@@ -241,7 +241,7 @@ function Trend({activatedEle}) {
                 <h4 className="panel-title">
                     <span>Overall Trend </span>
                     <span style={{width: '2px'}}></span>
-                    <Popup content="This panel shows an overall trend graph for each of the health aspect. The aggregated values are represented in the form of z-score, in comparison with other people's average." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
+                    <Popup content="This panel shows an overall trend graph for each of the health aspect. The aggregated values are represented in the form of percentile, in comparison with other people's average." trigger={<Icon disabled name='help circle' />} size='tiny' style={{}}/>
 
                 </h4>
                 <p className="panel-date">May 2019, Week 1 (April 30th - May 6th)</p>
@@ -274,7 +274,7 @@ function Trend({activatedEle}) {
                             width: 1000, 
                             height: 500, 
                             title: selectedAspect.charAt(0).toUpperCase()+selectedAspect.slice(1)+" Health [" + numMetric[selectedAspect].map(v => titleMap[v]) + "]", 
-                            yaxis: {range: [0, 100], title: 'z-score'}
+                            yaxis: {range: [0, 100], title: 'percentile'}
                         }}
                     />
                 </Box>
