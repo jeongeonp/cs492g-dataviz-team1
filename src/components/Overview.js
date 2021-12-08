@@ -113,6 +113,10 @@ function Overview({activatedEle, initialGoals}) {
             }
         });
 
+        // Add overall
+        // social_temp.push('Overall');
+        // mental_temp.push('Overall');
+        // physical_temp.push('Overall');
 
         changeMetrics(state => ({...state, physical: physical_temp, mental: mental_temp, social: social_temp}))
 
